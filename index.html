@@ -2,920 +2,870 @@
 <html lang="nl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>ASM Planner — BSO & Pauzesport</title>
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@300;400;500;600&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@600;700;800&family=Barlow:wght@400;500;600&display=swap" rel="stylesheet">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@tabler/icons-webfont@latest/tabler-icons.min.css">
 <style>
-:root {
-  --blue:       #0057B8;
-  --blue-dark:  #003D82;
-  --blue-deep:  #001E4A;
-  --orange:     #FF6B00;
-  --orange-dim: #FF8C3A;
-  --orange-bg:  #FFF3E8;
-  --white:      #FFFFFF;
-  --off:        #F5F7FA;
-  --border:     #E2E8F0;
-  --border2:    #CBD5E1;
-  --text:       #0F1C2E;
-  --muted:      #64748B;
-  --light:      #94A3B8;
-  --blue-bg:    #EEF4FF;
-  --green-bg:   #ECFDF5;
-  --green:      #059669;
-  --r:          10px;
-  --r-lg:       14px;
-  --sh:         0 1px 3px rgba(0,0,0,.07), 0 4px 16px rgba(0,0,0,.06);
-  --sh-md:      0 4px 24px rgba(0,87,184,.13);
+:root{
+  --bl:#0057B8;--bld:#003D82;--bdp:#001E4A;
+  --or:#FF6B00;--orh:#e05e00;
+  --wh:#fff;--of:#F5F7FA;--bo:#E2E8F0;--bo2:#CBD5E1;
+  --tx:#0F1C2E;--mu:#64748B;--li:#94A3B8;
+  --blb:#EEF4FF;--grb:#ECFDF5;--reb:#FEF2F2;
+  --r:10px;--rl:14px;
+  --sh:0 1px 3px rgba(0,0,0,.07),0 4px 16px rgba(0,0,0,.06);
+  --shm:0 4px 24px rgba(0,87,184,.15);
 }
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-html{scroll-behavior:smooth}
-body{font-family:'Barlow',sans-serif;background:var(--off);color:var(--text);font-size:14px;line-height:1.5}
+body{font-family:'Barlow',sans-serif;background:var(--of);color:var(--tx);font-size:14px}
 
-/* ─── HEADER ─────────────────────────────────── */
-.hdr{
-  background:linear-gradient(135deg,var(--blue-deep) 0%,var(--blue-dark) 60%,var(--blue) 100%);
-  padding:0 1.5rem;height:58px;
-  display:flex;align-items:center;justify-content:space-between;
-  position:sticky;top:0;z-index:200;
-  box-shadow:0 2px 20px rgba(0,30,74,.35);
-}
-.hdr-logo{display:flex;align-items:center;gap:10px}
-.hdr-badge{
-  width:36px;height:36px;background:var(--orange);border-radius:8px;
-  display:flex;align-items:center;justify-content:center;
-  font-size:19px;color:#fff;flex-shrink:0;
-  box-shadow:0 2px 8px rgba(255,107,0,.4);
-}
-.hdr-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:800;color:#fff;letter-spacing:.02em;line-height:1}
-.hdr-sub{font-size:11px;color:rgba(255,255,255,.5);letter-spacing:.04em;margin-top:1px}
-.hdr-right{display:flex;align-items:center;gap:8px}
-.hdr-btn{
-  height:34px;padding:0 14px;border-radius:7px;
-  border:1px solid rgba(255,255,255,.2);
-  background:rgba(255,255,255,.1);
-  color:#fff;font-family:'Barlow',sans-serif;font-size:13px;font-weight:500;
-  cursor:pointer;display:flex;align-items:center;gap:6px;
-  transition:background .15s;white-space:nowrap;
-}
-.hdr-btn:hover{background:rgba(255,255,255,.2)}
-.hdr-btn.accent{background:var(--orange);border-color:var(--orange)}
-.hdr-btn.accent:hover{background:#e05e00}
-.save-flash{font-size:12px;color:rgba(255,255,255,.65);display:flex;align-items:center;gap:5px;opacity:0;transition:opacity .4s}
-.save-flash.on{opacity:1}
+/* HEADER */
+.hdr{background:linear-gradient(135deg,var(--bdp),var(--bld) 55%,var(--bl));
+  height:56px;padding:0 1.5rem;display:flex;align-items:center;justify-content:space-between;
+  position:sticky;top:0;z-index:300;box-shadow:0 2px 20px rgba(0,30,74,.4)}
+.hlogo{display:flex;align-items:center;gap:10px}
+.hico{width:34px;height:34px;background:var(--or);border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:18px;color:#fff;box-shadow:0 2px 8px rgba(255,107,0,.4)}
+.htit{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:800;color:#fff;letter-spacing:.02em;line-height:1}
+.hsub{font-size:10px;color:rgba(255,255,255,.5);letter-spacing:.04em}
+.hbtns{display:flex;align-items:center;gap:7px}
+.hbtn{height:32px;padding:0 13px;border-radius:7px;border:1px solid rgba(255,255,255,.2);background:rgba(255,255,255,.1);color:#fff;font-family:'Barlow',sans-serif;font-size:12px;font-weight:500;cursor:pointer;display:flex;align-items:center;gap:5px;transition:background .15s;white-space:nowrap}
+.hbtn:hover{background:rgba(255,255,255,.2)}
+.hbtn.or{background:var(--or);border-color:var(--or)}
+.hbtn.or:hover{background:var(--orh)}
+.sf{font-size:11px;color:rgba(255,255,255,.6);display:flex;align-items:center;gap:4px;opacity:0;transition:opacity .4s}
+.sf.on{opacity:1}
 
-/* ─── TABS ────────────────────────────────────── */
-.tabs{
-  background:var(--white);border-bottom:1px solid var(--border);
-  padding:0 1.5rem;display:flex;align-items:center;gap:0;
-  overflow-x:auto;
-}
-.tab{
-  padding:12px 18px;font-size:13px;font-weight:500;
-  color:var(--muted);border-bottom:2px solid transparent;
-  cursor:pointer;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none;
-  font-family:'Barlow',sans-serif;transition:color .15s;
-}
-.tab:hover{color:var(--text)}
-.tab.active{color:var(--blue);border-bottom-color:var(--orange);font-weight:600}
-.tab-sep{width:1px;height:20px;background:var(--border);margin:0 4px;flex-shrink:0}
+/* TABS */
+.tabs{background:var(--wh);border-bottom:1px solid var(--bo);padding:0 1.5rem;display:flex;overflow-x:auto}
+.tab{padding:11px 16px;font-size:13px;font-weight:500;color:var(--mu);border-bottom:2px solid transparent;cursor:pointer;white-space:nowrap;background:none;border-left:none;border-right:none;border-top:none;font-family:'Barlow',sans-serif;transition:color .15s}
+.tab:hover{color:var(--tx)}.tab.on{color:var(--bl);border-bottom-color:var(--or);font-weight:600}
+.tsep{width:1px;height:18px;background:var(--bo);margin:0 4px;align-self:center;flex-shrink:0}
+.page{display:none}.page.on{display:block}
 
-/* ─── LAYOUT ──────────────────────────────────── */
-.page{display:none}
-.page.active{display:block}
+/* PLANNER LAYOUT */
+.pw{display:grid;grid-template-columns:220px 1fr;min-height:calc(100vh - 93px)}
 
-/* ─── PLANNER PAGE ────────────────────────────── */
-.planner-wrap{display:grid;grid-template-columns:230px 1fr;min-height:calc(100vh - 95px)}
+/* SIDEBAR */
+.sb{background:var(--wh);border-right:1px solid var(--bo);padding:1rem;display:flex;flex-direction:column;gap:.85rem;overflow-y:auto;max-height:calc(100vh - 93px);position:sticky;top:93px}
+.sbl{font-size:10px;font-weight:700;color:var(--li);text-transform:uppercase;letter-spacing:.08em;margin-bottom:4px}
+.ar{display:grid;grid-template-columns:1fr 1fr;background:var(--of);border-radius:7px;padding:3px;gap:2px}
+.ao{padding:6px 0;text-align:center;font-size:13px;font-weight:500;border-radius:5px;cursor:pointer;color:var(--mu);border:none;background:none;font-family:'Barlow',sans-serif;transition:all .15s}
+.ao.on{background:var(--bdp);color:#fff;box-shadow:0 1px 6px rgba(0,30,74,.2)}
+.wr{display:flex;align-items:center;gap:6px}
+.wn{width:26px;height:26px;border-radius:6px;border:1px solid var(--bo);background:var(--wh);color:var(--mu);cursor:pointer;display:flex;align-items:center;justify-content:center;font-size:14px;transition:background .12s;flex-shrink:0}
+.wn:hover{background:var(--of);color:var(--tx)}
+.wlbl{font-size:13px;font-weight:600;color:var(--tx);flex:1;text-align:center}
+.tfr{display:flex;gap:3px}
+.tf{flex:1;padding:5px 0;border-radius:6px;border:1px solid var(--bo);background:var(--wh);font-size:11px;font-weight:500;color:var(--mu);cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;text-align:center}
+.tf.on{background:var(--bdp);color:#fff;border-color:var(--bdp)}
+.dfr{display:flex;gap:3px}
+.df{flex:1;padding:4px 0;border-radius:6px;border:1px solid var(--bo);background:var(--wh);font-size:10px;font-weight:600;color:var(--mu);cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;text-align:center}
+.df.on.de{background:#DCFCE7;color:#166534;border-color:#86EFAC}
+.df.on.dm{background:#FEF9C3;color:#854D0E;border-color:#FDE047}
+.df.on.dh{background:#FEE2E2;color:#991B1B;border-color:#FCA5A5}
+.clist{display:flex;flex-direction:column;gap:1px}
+.cb{display:flex;align-items:center;gap:8px;padding:7px 8px;border-radius:7px;cursor:pointer;border:none;background:none;width:100%;text-align:left;font-family:'Barlow',sans-serif;transition:background .12s}
+.cb:hover{background:var(--of)}.cb.on{background:var(--blb)}
+.ci{width:26px;height:26px;border-radius:6px;background:var(--of);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--bl);flex-shrink:0;transition:background .12s}
+.cb.on .ci{background:var(--bl);color:#fff}
+.cn{font-size:12px;font-weight:500;color:var(--tx);line-height:1.2}
+.ca{font-size:10px;color:var(--li)}
 
-/* sidebar */
-.sb{
-  background:var(--white);border-right:1px solid var(--border);
-  padding:1.25rem 1rem;display:flex;flex-direction:column;gap:1rem;
-  overflow-y:auto;max-height:calc(100vh - 95px);
-  position:sticky;top:95px;
-}
-.sb-label{font-size:10px;font-weight:700;color:var(--light);text-transform:uppercase;letter-spacing:.08em;margin-bottom:6px}
-.age-row{display:grid;grid-template-columns:1fr 1fr;background:var(--off);border-radius:8px;padding:3px;gap:3px}
-.age-opt{
-  padding:7px 0;text-align:center;font-size:13px;font-weight:500;
-  border-radius:6px;cursor:pointer;color:var(--muted);border:none;background:none;
-  font-family:'Barlow',sans-serif;transition:all .15s;
-}
-.age-opt.on{background:var(--blue-deep);color:#fff;box-shadow:0 1px 6px rgba(0,30,74,.25)}
-.week-row{display:flex;align-items:center;gap:6px}
-.week-nav{
-  width:28px;height:28px;border-radius:6px;border:1px solid var(--border);
-  background:var(--white);color:var(--muted);cursor:pointer;
-  display:flex;align-items:center;justify-content:center;font-size:15px;
-  transition:background .12s;flex-shrink:0;
-}
-.week-nav:hover{background:var(--off);color:var(--text)}
-.week-label{font-size:13px;font-weight:600;color:var(--text);flex:1;text-align:center}
-.comp-list{display:flex;flex-direction:column;gap:1px}
-.comp-btn{
-  display:flex;align-items:center;gap:9px;
-  padding:8px 9px;border-radius:8px;cursor:pointer;
-  border:none;background:none;width:100%;text-align:left;
-  font-family:'Barlow',sans-serif;transition:background .12s;
-}
-.comp-btn:hover{background:var(--off)}
-.comp-btn.on{background:var(--blue-bg)}
-.comp-ico{
-  width:28px;height:28px;border-radius:7px;background:var(--off);
-  display:flex;align-items:center;justify-content:center;font-size:14px;
-  color:var(--blue);flex-shrink:0;transition:background .12s;
-}
-.comp-btn.on .comp-ico{background:var(--blue);color:#fff}
-.comp-name{font-size:13px;font-weight:500;color:var(--text);line-height:1.2}
-.comp-asm{font-size:11px;color:var(--light)}
-.type-filter{display:flex;gap:4px}
-.tf{
-  flex:1;padding:5px 0;border-radius:6px;border:1px solid var(--border);
-  background:var(--white);font-size:12px;font-weight:500;color:var(--muted);
-  cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;text-align:center;
-}
-.tf.on{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep)}
+/* MAIN */
+.pm{padding:1rem;display:flex;flex-direction:column;gap:1rem;overflow:auto}
 
-/* main planner area */
-.planner-main{padding:1.25rem;display:flex;flex-direction:column;gap:1.25rem;overflow:auto}
+/* WEEK GRID */
+.shtop{display:flex;align-items:center;justify-content:space-between;margin-bottom:.6rem}
+.shtl{font-family:'Barlow Condensed',sans-serif;font-size:19px;font-weight:700}
+.clb{font-size:11px;color:var(--mu);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:4px;font-family:'Barlow',sans-serif}
+.clb:hover{color:var(--tx)}
+.wgrid{display:grid;grid-template-columns:repeat(5,1fr);gap:7px}
+.dc{background:var(--wh);border-radius:var(--rl);border:1px solid var(--bo);overflow:hidden;box-shadow:var(--sh)}
+.dch{padding:8px 10px 7px;display:flex;align-items:center;gap:7px}
+.dcn{font-family:'Barlow Condensed',sans-serif;font-size:14px;font-weight:700;color:#fff;letter-spacing:.02em}
+.dct{font-size:9px;background:rgba(255,255,255,.15);border:none;border-radius:4px;padding:2px 6px;color:rgba(255,255,255,.8);font-family:'Barlow',sans-serif;flex:1;min-width:0}
+.dct::placeholder{color:rgba(255,255,255,.35)}.dct:focus{outline:none;background:rgba(255,255,255,.25)}
+.dcb{padding:8px 9px;display:flex;flex-direction:column;gap:4px}
+.slot-group-lbl{font-size:9px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;margin:4px 0 3px;display:flex;align-items:center;gap:5px}
+.slot-group-lbl.pauze{color:#BF5B04}
+.slot-group-lbl.bso{color:#1E4DB7;margin-top:8px}
 
-/* week schema */
-.schema-header{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem}
-.schema-title{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;color:var(--text)}
-.clear-btn{font-size:12px;color:var(--muted);background:none;border:none;cursor:pointer;display:flex;align-items:center;gap:5px;font-family:'Barlow',sans-serif}
-.clear-btn:hover{color:var(--text)}
-.week-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px}
-.day-card{background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);overflow:hidden;box-shadow:var(--sh)}
-.day-hdr{padding:9px 12px 8px;display:flex;align-items:center;justify-content:space-between}
-.day-name{font-family:'Barlow Condensed',sans-serif;font-size:15px;font-weight:700;letter-spacing:.03em;color:#fff}
-.day-theme-inp{
-  font-size:10px;background:rgba(255,255,255,.15);border:none;
-  border-radius:4px;padding:2px 7px;color:rgba(255,255,255,.85);
-  font-family:'Barlow',sans-serif;width:0;flex:1;margin-left:8px;min-width:0;
-  cursor:text;
+/* SLOT — empty = clickable target */
+.slot{
+  border-radius:6px;padding:5px 7px;cursor:pointer;
+  transition:all .15s;position:relative;min-height:38px;
+  display:flex;align-items:center;
 }
-.day-theme-inp::placeholder{color:rgba(255,255,255,.4)}
-.day-theme-inp:focus{outline:none;background:rgba(255,255,255,.25)}
-.day-body{padding:9px 10px;display:flex;flex-direction:column;gap:7px}
-.slot-lbl{font-size:10px;font-weight:700;text-transform:uppercase;letter-spacing:.06em;color:var(--light);margin-bottom:3px}
-.slot-filled{background:var(--off);border-radius:7px;padding:7px 9px;display:flex;align-items:flex-start;gap:6px}
-.slot-info{flex:1;min-width:0}
-.slot-name{font-size:12px;font-weight:600;color:var(--text);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.slot-meta{font-size:11px;color:var(--muted);margin-top:1px}
-.slot-x{background:none;border:none;cursor:pointer;color:var(--light);font-size:14px;padding:0;line-height:1;flex-shrink:0;margin-top:1px}
-.slot-x:hover{color:var(--text)}
-.slot-empty{border:1.5px dashed var(--border2);border-radius:7px;padding:7px;text-align:center;font-size:11px;color:var(--light)}
-.badge{display:inline-block;font-size:10px;font-weight:700;padding:1px 7px;border-radius:99px;margin-bottom:3px;letter-spacing:.02em}
-.badge-p{background:#FFF3E0;color:#C05A00}
-.badge-b{background:#EEF4FF;color:#1E4DB7}
+.slot.empty{
+  border:1.5px dashed var(--bo2);
+  background:transparent;
+  justify-content:center;
+  font-size:10px;color:var(--li);
+}
+.slot.empty:hover{border-color:var(--bl);background:var(--blb);color:var(--bl)}
+.slot.empty.highlight{border-color:var(--or);background:#FFF8F2;animation:pulse .6s infinite alternate}
+@keyframes pulse{from{box-shadow:0 0 0 0 rgba(255,107,0,.2)}to{box-shadow:0 0 0 4px rgba(255,107,0,.0)}}
+.slot.filled{background:var(--of);border:1px solid var(--bo);}
+.slot.filled:hover{border-color:var(--bo2)}
+.slot-inner{display:flex;align-items:flex-start;gap:5px;width:100%}
+.slot-txt{flex:1;min-width:0}
+.slot-nm{font-size:11px;font-weight:600;color:var(--tx);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;line-height:1.3}
+.slot-meta{font-size:10px;color:var(--mu);margin-top:1px}
+.slot-rm{background:none;border:none;cursor:pointer;color:var(--li);font-size:12px;padding:0;line-height:1;flex-shrink:0;margin-top:1px}
+.slot-rm:hover{color:var(--tx)}
+.bdg{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px}
+.bp{background:#FFF3E0;color:#C05A00}.bb{background:#EEF4FF;color:#1E4DB7}
+.db{display:inline-block;font-size:9px;font-weight:700;padding:1px 5px;border-radius:99px;margin-left:3px}
+.dbe{background:#DCFCE7;color:#166534}.dbm{background:#FEF9C3;color:#854D0E}.dbh{background:#FEE2E2;color:#991B1B}
+.h0{background:linear-gradient(135deg,#1a4fa0,#2563c2)}
+.h1{background:linear-gradient(135deg,#0e6b4a,#10a070)}
+.h2{background:linear-gradient(135deg,#7c2d9e,#a855d4)}
+.h3{background:linear-gradient(135deg,#b45309,#d97706)}
+.h4{background:linear-gradient(135deg,#b91c1c,#ef4444)}
 
-/* day colors */
-.dc-0{background:linear-gradient(135deg,#1a4fa0,#2563c2)}
-.dc-1{background:linear-gradient(135deg,#0e6b4a,#10a070)}
-.dc-2{background:linear-gradient(135deg,#7c2d9e,#a855d4)}
-.dc-3{background:linear-gradient(135deg,#b45309,#d97706)}
-.dc-4{background:linear-gradient(135deg,#b91c1c,#ef4444)}
+/* SELECTING STATE banner */
+.sel-banner{
+  background:linear-gradient(135deg,var(--or),#e05e00);
+  color:#fff;padding:8px 16px;border-radius:var(--r);
+  display:none;align-items:center;justify-content:space-between;gap:10px;
+  margin-bottom:.5rem;box-shadow:0 2px 12px rgba(255,107,0,.3);
+  font-size:13px;font-weight:500;
+}
+.sel-banner.on{display:flex}
+.sel-banner-cancel{background:rgba(255,255,255,.2);border:none;color:#fff;padding:4px 12px;border-radius:6px;cursor:pointer;font-family:'Barlow',sans-serif;font-size:12px}
+.sel-banner-cancel:hover{background:rgba(255,255,255,.3)}
 
-/* oef panel */
-.panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.75rem;flex-wrap:wrap;gap:8px}
-.panel-title{font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;color:var(--text)}
-.oef-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:10px}
-.oef-card{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:13px 14px;box-shadow:var(--sh);
-  transition:box-shadow .15s,transform .12s;
-}
-.oef-card:hover{box-shadow:var(--sh-md);transform:translateY(-2px)}
-.oef-top{display:flex;align-items:center;gap:8px;margin-bottom:5px}
-.oef-name{font-size:13px;font-weight:600;color:var(--text);flex:1}
-.oef-desc{font-size:12px;color:var(--muted);margin-bottom:8px;line-height:1.5}
-.oef-meta{font-size:11px;color:var(--light);margin-bottom:9px;display:flex;gap:12px}
-.day-add-btns{display:flex;gap:4px;flex-wrap:wrap}
-.dadd{
-  font-size:11px;padding:3px 9px;border-radius:99px;
-  border:1px solid var(--border);background:var(--white);
-  color:var(--text);cursor:pointer;font-family:'Barlow',sans-serif;
-  transition:all .12s;
-}
-.dadd:hover{background:var(--blue);color:#fff;border-color:var(--blue)}
-.dadd.taken{opacity:.35;pointer-events:none}
-.empty-panel{
-  text-align:center;padding:3rem 1rem;color:var(--muted);
-  background:var(--white);border-radius:var(--r-lg);border:1px solid var(--border);
-}
-.empty-panel .ei{font-size:36px;color:var(--border2);display:block;margin-bottom:.75rem}
+/* OEF PANEL */
+.panel-hdr{display:flex;align-items:center;justify-content:space-between;margin-bottom:.65rem;flex-wrap:wrap;gap:7px}
+.pt{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700}
+.ogrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:8px}
+.oc{background:var(--wh);border:1px solid var(--bo);border-radius:var(--rl);padding:11px 12px;box-shadow:var(--sh);transition:box-shadow .15s,transform .12s,border-color .15s;cursor:default}
+.oc:hover{box-shadow:var(--shm);transform:translateY(-1px)}
+.oc.selectable{cursor:pointer;border-color:var(--bl)}
+.oc.selectable:hover{background:var(--blb)}
+.oct{display:flex;align-items:center;gap:6px;margin-bottom:3px;flex-wrap:wrap}
+.ocn{font-size:13px;font-weight:600;color:var(--tx)}
+.ocg{font-size:11px;color:var(--bl);background:var(--blb);padding:2px 6px;border-radius:5px;margin-bottom:4px}
+.ocd{font-size:12px;color:var(--mu);margin-bottom:6px;line-height:1.5}
+.ocm{font-size:11px;color:var(--li);margin-bottom:8px;display:flex;gap:9px;flex-wrap:wrap}
+.dab{display:flex;gap:4px;flex-wrap:wrap}
+.da{font-size:10px;padding:3px 8px;border-radius:99px;border:1px solid var(--bo);background:var(--wh);color:var(--tx);cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s}
+.da:hover{background:var(--bl);color:#fff;border-color:var(--bl)}
+.da.full{opacity:.35;pointer-events:none}
+.ep{text-align:center;padding:2.5rem 1rem;color:var(--mu);background:var(--wh);border-radius:var(--rl);border:1px solid var(--bo)}
+.ep i{font-size:32px;color:var(--bo2);display:block;margin-bottom:.6rem}
 
-/* ─── OEFENINGEN PAGE ─────────────────────────── */
-.lib-wrap{padding:1.5rem;max-width:1200px;margin:0 auto}
-.lib-search-bar{
-  display:flex;gap:10px;margin-bottom:1.25rem;flex-wrap:wrap;align-items:center
-}
-.search-inp{
-  flex:1;min-width:180px;height:38px;padding:0 12px 0 36px;
-  border:1px solid var(--border);border-radius:8px;
-  font-size:13px;font-family:'Barlow',sans-serif;color:var(--text);
-  background:var(--white);position:relative;
-}
-.search-inp:focus{outline:none;border-color:var(--blue)}
-.search-wrap{position:relative;flex:1;min-width:180px}
-.search-ico{position:absolute;left:10px;top:50%;transform:translateY(-50%);color:var(--light);font-size:16px;pointer-events:none}
-.lib-comp-filter{display:flex;gap:6px;flex-wrap:wrap}
-.lcf{
-  padding:5px 13px;border-radius:99px;border:1px solid var(--border);
-  background:var(--white);font-size:12px;font-weight:500;color:var(--muted);
-  cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s;
-}
-.lcf.on{background:var(--blue-deep);color:#fff;border-color:var(--blue-deep)}
-.lib-section{margin-bottom:2rem}
-.lib-section-title{
-  font-family:'Barlow Condensed',sans-serif;font-size:18px;font-weight:700;
-  color:var(--text);margin-bottom:.75rem;display:flex;align-items:center;gap:8px;
-}
-.lib-section-icon{
-  width:30px;height:30px;border-radius:8px;background:var(--blue);
-  display:flex;align-items:center;justify-content:center;color:#fff;font-size:15px;
-}
-.lib-oef-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
-.lib-card{
-  background:var(--white);border:1px solid var(--border);
-  border-radius:var(--r-lg);padding:14px 16px;box-shadow:var(--sh);
-  position:relative;
-}
-.lib-card-actions{
-  position:absolute;top:10px;right:10px;
-  display:flex;gap:4px;opacity:0;transition:opacity .15s;
-}
-.lib-card:hover .lib-card-actions{opacity:1}
-.lib-act-btn{
-  width:26px;height:26px;border-radius:6px;border:1px solid var(--border);
-  background:var(--white);cursor:pointer;color:var(--muted);font-size:13px;
-  display:flex;align-items:center;justify-content:center;
-  transition:background .12s;
-}
-.lib-act-btn:hover{background:var(--off);color:var(--text)}
-.lib-act-btn.del:hover{background:#FEE2E2;color:#DC2626;border-color:#FECACA}
-.lib-name{font-size:14px;font-weight:600;color:var(--text);margin-bottom:4px;padding-right:60px}
-.lib-desc{font-size:12px;color:var(--muted);line-height:1.5;margin-bottom:8px}
-.lib-meta{display:flex;gap:10px;font-size:11px;color:var(--light)}
-.lib-tags{display:flex;gap:5px;margin-top:8px;flex-wrap:wrap}
-.lib-tag{font-size:10px;padding:2px 8px;border-radius:99px;background:var(--off);color:var(--muted);border:1px solid var(--border)}
+/* PROGRESS */
+.prw{padding:1.5rem;max-width:1100px;margin:0 auto}
+.prh{display:flex;align-items:center;justify-content:space-between;margin-bottom:1.1rem;flex-wrap:wrap;gap:9px}
+.prt{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700}
+.gg{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:11px}
+.gc{background:var(--wh);border:1px solid var(--bo);border-radius:var(--rl);padding:14px;box-shadow:var(--sh)}
+.gn{font-family:'Barlow Condensed',sans-serif;font-size:16px;font-weight:700;margin-bottom:10px;display:flex;align-items:center;justify-content:space-between}
+.cpr{display:flex;align-items:center;gap:8px;margin-bottom:7px}
+.cpl{font-size:11px;color:var(--mu);width:110px;flex-shrink:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.cpb{flex:1;height:7px;background:var(--of);border-radius:99px;overflow:hidden}
+.cpbi{height:100%;border-radius:99px;background:var(--bl);transition:width .4s}
+.stars{display:flex;gap:2px}
+.star{font-size:13px;cursor:pointer;color:var(--bo2);transition:transform .1s}
+.star:hover,.star.on{color:#F59E0B}.star:hover{transform:scale(1.2)}
+.ni{width:100%;border:1px solid var(--bo);border-radius:6px;padding:6px 9px;font-size:12px;font-family:'Barlow',sans-serif;color:var(--tx);background:var(--of);margin-top:7px;resize:none}
+.ni:focus{outline:none;border-color:var(--bl)}
 
-/* ─── MODAL ────────────────────────────────────── */
-.overlay{
-  display:none;position:fixed;inset:0;
-  background:rgba(0,0,0,.45);backdrop-filter:blur(4px);
-  z-index:500;align-items:center;justify-content:center;padding:1rem;
-}
-.overlay.open{display:flex}
-.modal{
-  background:var(--white);border-radius:16px;padding:1.75rem;
-  width:100%;max-width:480px;box-shadow:0 24px 60px rgba(0,0,0,.22);
-  animation:pop .2s cubic-bezier(.34,1.56,.64,1);
-}
-@keyframes pop{from{transform:scale(.92);opacity:0}to{transform:none;opacity:1}}
-.modal-title{font-family:'Barlow Condensed',sans-serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:1.25rem}
-.form-grid{display:flex;flex-direction:column;gap:12px}
-.form-row2{display:grid;grid-template-columns:1fr 1fr;gap:10px}
-.flbl{font-size:11px;font-weight:600;color:var(--muted);text-transform:uppercase;letter-spacing:.05em;margin-bottom:5px}
-.finp{
-  width:100%;padding:9px 12px;border:1px solid var(--border);border-radius:8px;
-  font-size:13px;font-family:'Barlow',sans-serif;color:var(--text);background:var(--off);
-  transition:border-color .12s,background .12s;
-}
-.finp:focus{outline:none;border-color:var(--blue);background:var(--white)}
-textarea.finp{resize:vertical;min-height:80px;line-height:1.5}
-.modal-foot{display:flex;gap:8px;justify-content:flex-end;margin-top:1.25rem}
-.mbtn{
-  height:38px;padding:0 18px;border-radius:8px;font-size:13px;font-weight:500;
-  font-family:'Barlow',sans-serif;cursor:pointer;transition:background .12s;
-  border:1px solid var(--border);background:var(--white);color:var(--text);
-}
-.mbtn:hover{background:var(--off)}
-.mbtn.prim{background:var(--blue);color:#fff;border-color:var(--blue)}
-.mbtn.prim:hover{background:var(--blue-dark)}
+/* LIBRARY */
+.lw{padding:1.5rem;max-width:1200px;margin:0 auto}
+.lsb{display:flex;gap:9px;margin-bottom:.85rem;flex-wrap:wrap;align-items:center}
+.sw{position:relative;flex:1;min-width:160px}
+.sico{position:absolute;left:9px;top:50%;transform:translateY(-50%);color:var(--li);font-size:15px;pointer-events:none}
+.sq{height:36px;padding:0 10px 0 33px;border:1px solid var(--bo);border-radius:7px;font-size:13px;font-family:'Barlow',sans-serif;color:var(--tx);background:var(--wh);width:100%}
+.sq:focus{outline:none;border-color:var(--bl)}
+.lcfr{display:flex;gap:5px;flex-wrap:wrap;margin-top:7px}
+.lcf{padding:4px 11px;border-radius:99px;border:1px solid var(--bo);background:var(--wh);font-size:11px;font-weight:500;color:var(--mu);cursor:pointer;font-family:'Barlow',sans-serif;transition:all .12s}
+.lcf.on{background:var(--bdp);color:#fff;border-color:var(--bdp)}
+.lsec{margin-bottom:1.75rem}
+.lstl{font-family:'Barlow Condensed',sans-serif;font-size:17px;font-weight:700;margin-bottom:.65rem;display:flex;align-items:center;gap:7px}
+.lic{width:28px;height:28px;border-radius:7px;background:var(--bl);display:flex;align-items:center;justify-content:center;color:#fff;font-size:14px}
+.lgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(275px,1fr));gap:9px}
+.lc{background:var(--wh);border:1px solid var(--bo);border-radius:var(--rl);padding:13px 14px;box-shadow:var(--sh);position:relative}
+.lacts{position:absolute;top:9px;right:9px;display:flex;gap:3px;opacity:0;transition:opacity .15s}
+.lc:hover .lacts{opacity:1}
+.lab{width:25px;height:25px;border-radius:5px;border:1px solid var(--bo);background:var(--wh);cursor:pointer;color:var(--mu);font-size:12px;display:flex;align-items:center;justify-content:center;transition:background .12s}
+.lab:hover{background:var(--of);color:var(--tx)}
+.lab.dl:hover{background:#FEE2E2;color:#DC2626;border-color:#FECACA}
+.lnm{font-size:13px;font-weight:600;margin-bottom:3px;padding-right:55px}
+.lgl{font-size:11px;color:var(--bl);margin-bottom:4px}
+.ld{font-size:12px;color:var(--mu);line-height:1.5;margin-bottom:7px}
+.lm{display:flex;gap:9px;font-size:11px;color:var(--li);flex-wrap:wrap}
+.ltg{display:flex;gap:4px;margin-bottom:5px;flex-wrap:wrap}
+.lt{font-size:9px;padding:2px 7px;border-radius:99px;background:var(--of);color:var(--mu);border:1px solid var(--bo)}
 
-/* ─── PRINT ─────────────────────────────────────── */
+/* MODAL */
+.ov{display:none;position:fixed;inset:0;background:rgba(0,0,0,.45);backdrop-filter:blur(4px);z-index:500;align-items:center;justify-content:center;padding:1rem}
+.ov.open{display:flex}
+.mo{background:var(--wh);border-radius:14px;padding:1.5rem;width:100%;max-width:490px;box-shadow:0 24px 60px rgba(0,0,0,.22);animation:pop .2s cubic-bezier(.34,1.56,.64,1);max-height:90vh;overflow-y:auto}
+@keyframes pop{from{transform:scale(.93);opacity:0}to{transform:none;opacity:1}}
+.mt2{font-family:'Barlow Condensed',sans-serif;font-size:20px;font-weight:700;margin-bottom:1.1rem}
+.fg{display:flex;flex-direction:column;gap:10px}
+.fr2{display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.fl{font-size:10px;font-weight:600;color:var(--mu);text-transform:uppercase;letter-spacing:.05em;margin-bottom:4px}
+.fi{width:100%;padding:8px 10px;border:1px solid var(--bo);border-radius:7px;font-size:13px;font-family:'Barlow',sans-serif;color:var(--tx);background:var(--of);transition:border-color .12s,background .12s}
+.fi:focus{outline:none;border-color:var(--bl);background:var(--wh)}
+textarea.fi{resize:vertical;min-height:75px;line-height:1.5}
+.mf{display:flex;gap:7px;justify-content:flex-end;margin-top:1.1rem}
+.mb2{height:36px;padding:0 16px;border-radius:7px;font-size:13px;font-weight:500;font-family:'Barlow',sans-serif;cursor:pointer;border:1px solid var(--bo);background:var(--wh);color:var(--tx);transition:background .12s}
+.mb2:hover{background:var(--of)}
+.mb2.pr{background:var(--bl);color:#fff;border-color:var(--bl)}
+.mb2.pr:hover{background:var(--bld)}
+
 @media print{
-  .hdr,.tabs,.sb,.panel-hdr,.day-add-btns,.slot-x,.hdr-right,.clear-btn{display:none!important}
-  .planner-wrap{display:block}
-  .planner-main{padding:.5rem}
-  .week-grid{grid-template-columns:repeat(5,1fr);gap:6px}
-  .day-card{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
-  .day-theme-inp{display:none}
-  .oef-grid,.oef-panel{display:none!important}
-  body{background:#fff}
-  .print-hdr{display:flex!important}
+  .hdr,.tabs,.sb,.panel-hdr,.dab,.slot-rm,.hbtns,.clb,.sel-banner{display:none!important}
+  .pw{display:block}.pm{padding:.4rem}
+  .wgrid{grid-template-columns:repeat(5,1fr);gap:5px}
+  .dc{break-inside:avoid;box-shadow:none;border:1px solid #ccc}
+  .dct{display:none}.ogrid{display:none!important}body{background:#fff}
 }
-.print-hdr{
-  display:none;align-items:center;justify-content:space-between;
-  padding:.5rem 0 1rem;border-bottom:2px solid var(--blue-deep);margin-bottom:1rem;
+@media(max-width:960px){
+  .pw{grid-template-columns:1fr}
+  .sb{position:static;max-height:none;flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--bo);padding:.75rem;gap:.75rem}
+  .wgrid{grid-template-columns:repeat(2,1fr)}
 }
-.print-hdr-title{font-family:'Barlow Condensed',sans-serif;font-size:24px;font-weight:800;color:var(--blue-deep)}
-.print-hdr-meta{font-size:12px;color:var(--muted)}
-
-/* ─── RESPONSIVE ─────────────────────────────────── */
-@media(max-width:900px){
-  .planner-wrap{grid-template-columns:1fr}
-  .sb{position:static;max-height:none;flex-direction:row;flex-wrap:wrap;border-right:none;border-bottom:1px solid var(--border);padding:.75rem;gap:.75rem}
-  .week-grid{grid-template-columns:repeat(2,1fr)}
-}
-@media(max-width:600px){
-  .week-grid{grid-template-columns:1fr}
-  .hdr-title{font-size:16px}
-  .hdr-btn span{display:none}
-}
+@media(max-width:600px){.wgrid{grid-template-columns:1fr}.htit{font-size:15px}}
 </style>
 </head>
 <body>
 
-<!-- HEADER -->
 <header class="hdr">
-  <div class="hdr-logo">
-    <div class="hdr-badge"><i class="ti ti-run"></i></div>
-    <div>
-      <div class="hdr-title">ASM Planner</div>
-      <div class="hdr-sub">BSO &amp; Pauzesport</div>
-    </div>
+  <div class="hlogo">
+    <div class="hico"><i class="ti ti-run"></i></div>
+    <div><div class="htit">ASM Planner</div><div class="hsub">BSO &amp; Pauzesport</div></div>
   </div>
-  <div class="hdr-right">
-    <span class="save-flash" id="sf"><i class="ti ti-check"></i> Opgeslagen</span>
-    <button class="hdr-btn" onclick="openModal()"><i class="ti ti-plus"></i><span> Oefening</span></button>
-    <button class="hdr-btn accent" onclick="window.print()"><i class="ti ti-printer"></i><span> Exporteer</span></button>
+  <div class="hbtns">
+    <span class="sf" id="sf"><i class="ti ti-check"></i> Opgeslagen</span>
+    <button class="hbtn" onclick="openModal()"><i class="ti ti-plus"></i> Oefening</button>
+    <button class="hbtn or" onclick="window.print()"><i class="ti ti-printer"></i> PDF</button>
   </div>
 </header>
 
-<!-- TABS -->
 <div class="tabs">
-  <button class="tab active" onclick="showPage('planner',this)">Weekplanner</button>
-  <div class="tab-sep"></div>
-  <button class="tab" onclick="showPage('library',this)">Oefeningen bibliotheek</button>
+  <button class="tab on" onclick="showPage('planner',this)">Weekplanner</button>
+  <div class="tsep"></div>
+  <button class="tab" onclick="showPage('library',this)">Oefeningen</button>
+  <div class="tsep"></div>
+  <button class="tab" onclick="showPage('progress',this)">Voortgang</button>
 </div>
 
-<!-- ═══ PAGE: PLANNER ═══ -->
-<div class="page active" id="page-planner">
-<div class="planner-wrap">
-
-  <!-- SIDEBAR -->
+<!-- PLANNER -->
+<div class="page on" id="page-planner">
+<div class="pw">
   <aside class="sb">
     <div>
-      <div class="sb-label">Leeftijdsgroep</div>
-      <div class="age-row">
-        <button class="age-opt on" id="a47" onclick="setAge('4-7')">4–7 jaar</button>
-        <button class="age-opt" id="a711" onclick="setAge('7-11')">7–11 jaar</button>
+      <div class="sbl">Leeftijdsgroep</div>
+      <div class="ar">
+        <button class="ao on" id="a47" onclick="setAge('4-7')">4–7 jaar</button>
+        <button class="ao" id="a711" onclick="setAge('7-11')">7–11 jaar</button>
       </div>
     </div>
     <div>
-      <div class="sb-label">Week</div>
-      <div class="week-row">
-        <button class="week-nav" onclick="changeWeek(-1)"><i class="ti ti-chevron-left"></i></button>
-        <span class="week-label" id="weekLbl">Week 1</span>
-        <button class="week-nav" onclick="changeWeek(1)"><i class="ti ti-chevron-right"></i></button>
+      <div class="sbl">Week</div>
+      <div class="wr">
+        <button class="wn" onclick="chWk(-1)"><i class="ti ti-chevron-left"></i></button>
+        <span class="wlbl" id="wlbl">Week 1</span>
+        <button class="wn" onclick="chWk(1)"><i class="ti ti-chevron-right"></i></button>
       </div>
     </div>
     <div>
-      <div class="sb-label">Type</div>
-      <div class="type-filter">
-        <button class="tf on" id="tf-a" onclick="setTF('alle')">Alle</button>
-        <button class="tf" id="tf-p" onclick="setTF('pauze')">Pauze</button>
-        <button class="tf" id="tf-b" onclick="setTF('bso')">BSO</button>
+      <div class="sbl">Type</div>
+      <div class="tfr">
+        <button class="tf on" id="tfa" onclick="setTF('alle')">Alle</button>
+        <button class="tf" id="tfp" onclick="setTF('pauze')">Pauze</button>
+        <button class="tf" id="tfb" onclick="setTF('bso')">BSO</button>
       </div>
     </div>
     <div>
-      <div class="sb-label">Competentie</div>
-      <div class="comp-list" id="compList"></div>
+      <div class="sbl">Niveau</div>
+      <div class="dfr">
+        <button class="df on de" id="dfe" onclick="togDF('e')">Makkelijk</button>
+        <button class="df on dm" id="dfm" onclick="togDF('m')">Gemiddeld</button>
+        <button class="df on dh" id="dfh" onclick="togDF('h')">Moeilijk</button>
+      </div>
+    </div>
+    <div>
+      <div class="sbl">Competentie</div>
+      <div class="clist" id="clist"></div>
     </div>
   </aside>
 
-  <!-- MAIN -->
-  <main class="planner-main">
-
-    <!-- print header -->
-    <div class="print-hdr">
-      <div>
-        <div class="print-hdr-title" id="prtTitle">ASM Weekschema</div>
-        <div class="print-hdr-meta" id="prtMeta"></div>
-      </div>
-      <div style="font-size:11px;color:var(--muted)">Athletic Skills Model</div>
+  <main class="pm">
+    <!-- selecting banner -->
+    <div class="sel-banner" id="selBanner">
+      <span id="selBannerTxt">Klik op een leeg slot in het schema</span>
+      <button class="sel-banner-cancel" onclick="cancelSel()">✕ Annuleren</button>
     </div>
 
     <!-- week grid -->
     <div>
-      <div class="schema-header">
-        <div class="schema-title" id="schTitle">Week 1 — 4–7 jaar</div>
-        <button class="clear-btn" onclick="clearWeek()"><i class="ti ti-trash" style="font-size:13px"></i> Leegmaken</button>
+      <div class="shtop">
+        <div class="shtl" id="shtl">Week 1 — 4–7 jaar</div>
+        <button class="clb" onclick="clearWk()"><i class="ti ti-trash" style="font-size:12px"></i> Leegmaken</button>
       </div>
-      <div class="week-grid" id="weekGrid"></div>
+      <div class="wgrid" id="wgrid"></div>
     </div>
 
     <!-- oef panel -->
-    <div id="oefPanel">
+    <div>
       <div class="panel-hdr">
-        <div class="panel-title" id="panelTitle">Kies een competentie in de zijbalk</div>
+        <div class="pt" id="ptl">Kies een competentie in de zijbalk</div>
       </div>
-      <div id="oefGrid"></div>
+      <div id="ogrid"></div>
     </div>
-
   </main>
 </div>
 </div>
 
-<!-- ═══ PAGE: LIBRARY ═══ -->
+<!-- LIBRARY -->
 <div class="page" id="page-library">
-<div class="lib-wrap">
-  <div class="lib-search-bar">
-    <div class="search-wrap">
-      <i class="ti ti-search search-ico"></i>
-      <input class="search-inp" id="libSearch" type="text" placeholder="Zoek oefening..." oninput="renderLib()">
-    </div>
-    <div class="age-row" style="width:160px;flex-shrink:0">
-      <button class="age-opt on" id="la47" onclick="setLibAge('4-7')">4–7</button>
-      <button class="age-opt" id="la711" onclick="setLibAge('7-11')">7–11</button>
+<div class="lw">
+  <div class="lsb">
+    <div class="sw"><i class="ti ti-search sico"></i><input class="sq" id="lq" type="text" placeholder="Zoek oefening..." oninput="rLib()"></div>
+    <div class="ar" style="width:150px;flex-shrink:0">
+      <button class="ao on" id="la47" onclick="setLA('4-7')">4–7</button>
+      <button class="ao" id="la711" onclick="setLA('7-11')">7–11</button>
     </div>
   </div>
-  <div class="lib-comp-filter" id="libFilter"></div>
-  <div style="margin-top:1.25rem" id="libContent"></div>
+  <div class="lcfr" id="lf"></div>
+  <div style="margin-top:1.1rem" id="lc2"></div>
+</div>
+</div>
+
+<!-- PROGRESS -->
+<div class="page" id="page-progress">
+<div class="prw">
+  <div class="prh">
+    <div class="prt">Voortgang per groep</div>
+    <button class="hbtn" style="color:var(--tx);border-color:var(--bo);background:var(--wh)" onclick="addGrp()"><i class="ti ti-plus"></i> Groep toevoegen</button>
+  </div>
+  <div class="gg" id="grpGrid"></div>
 </div>
 </div>
 
 <!-- MODAL -->
-<div class="overlay" id="modal" onclick="if(event.target===this)closeModal()">
-<div class="modal">
-  <div class="modal-title" id="modalTitle">Oefening toevoegen</div>
-  <input type="hidden" id="editId">
-  <div class="form-grid">
-    <div>
-      <div class="flbl">Naam</div>
-      <input class="finp" id="inp-naam" type="text" placeholder="bijv. Blind estafette">
+<div class="ov" id="modal" onclick="if(event.target===this)closeModal()">
+<div class="mo">
+  <div class="mt2" id="mtl">Oefening toevoegen</div>
+  <input type="hidden" id="eid">
+  <div class="fg">
+    <div><div class="fl">Naam</div><input class="fi" id="in" type="text" placeholder="bijv. Blind estafette"></div>
+    <div><div class="fl">Beschrijving</div><textarea class="fi" id="idc" placeholder="Leg de oefening kort uit..."></textarea></div>
+    <div><div class="fl">ASM-doel</div><input class="fi" id="ig" type="text" placeholder="bijv. Verbetert evenwicht"></div>
+    <div class="fr2">
+      <div><div class="fl">Type</div><select class="fi" id="ity"><option value="pauze">Pauzesport</option><option value="bso">BSO</option></select></div>
+      <div><div class="fl">Leeftijd</div><select class="fi" id="ilf"><option value="4-7">4–7 jaar</option><option value="7-11">7–11 jaar</option><option value="beide">Beide</option></select></div>
     </div>
-    <div>
-      <div class="flbl">Beschrijving</div>
-      <textarea class="finp" id="inp-desc" placeholder="Leg de oefening kort uit..."></textarea>
+    <div class="fr2">
+      <div><div class="fl">Niveau</div><select class="fi" id="idf"><option value="e">Makkelijk</option><option value="m">Gemiddeld</option><option value="h">Moeilijk</option></select></div>
+      <div><div class="fl">Duur</div><input class="fi" id="idu" type="text" placeholder="bijv. 20 min"></div>
     </div>
-    <div class="form-row2">
-      <div>
-        <div class="flbl">Type</div>
-        <select class="finp" id="inp-type">
-          <option value="pauze">Pauzesport</option>
-          <option value="bso">BSO</option>
-        </select>
-      </div>
-      <div>
-        <div class="flbl">Leeftijd</div>
-        <select class="finp" id="inp-leeftijd">
-          <option value="4-7">4–7 jaar</option>
-          <option value="7-11">7–11 jaar</option>
-          <option value="beide">Beide</option>
-        </select>
-      </div>
+    <div class="fr2">
+      <div><div class="fl">Groepsgrootte</div><input class="fi" id="igr" type="text" placeholder="bijv. 6–12"></div>
+      <div><div class="fl">Materiaal</div><input class="fi" id="im" type="text" placeholder="bijv. Ballen, hoepels"></div>
     </div>
-    <div class="form-row2">
-      <div>
-        <div class="flbl">Duur</div>
-        <input class="finp" id="inp-duur" type="text" placeholder="bijv. 20 min">
-      </div>
-      <div>
-        <div class="flbl">Groep</div>
-        <input class="finp" id="inp-groep" type="text" placeholder="bijv. 6–12 kinderen">
-      </div>
-    </div>
-    <div>
-      <div class="flbl">Materiaal</div>
-      <input class="finp" id="inp-mat" type="text" placeholder="bijv. Ballen, hoepels">
-    </div>
-    <div>
-      <div class="flbl">Competentie</div>
-      <select class="finp" id="inp-comp"></select>
-    </div>
+    <div><div class="fl">Competentie</div><select class="fi" id="ic"></select></div>
   </div>
-  <div class="modal-foot">
-    <button class="mbtn" onclick="closeModal()">Annuleren</button>
-    <button class="mbtn prim" onclick="saveOef()">Opslaan</button>
+  <div class="mf">
+    <button class="mb2" onclick="closeModal()">Annuleren</button>
+    <button class="mb2 pr" onclick="saveOef()">Opslaan</button>
   </div>
 </div>
 </div>
 
 <script>
-// ═══════════════════════════════════════════════
-// DATA
-// ═══════════════════════════════════════════════
-var COMPS = {
-  "Evenwicht & Stabiliteit":    {icon:"ti-focus-2",   asm:"Laag 1–2"},
-  "Loopvormen & Sprint":        {icon:"ti-run",        asm:"Laag 1–2"},
-  "Springen & Landen":          {icon:"ti-arrow-bar-up",asm:"Laag 1–2"},
-  "Gooien & Vangen":            {icon:"ti-circle",     asm:"Laag 1–3"},
-  "Trappen & Schieten":         {icon:"ti-ball-football",asm:"Laag 2–3"},
-  "Samenwerken & Spelvormen":   {icon:"ti-users",      asm:"Laag 1–3"},
-  "Coördinatie & Ritme":        {icon:"ti-wave-sine",  asm:"Laag 1–2"},
-  "Kracht & Conditie":          {icon:"ti-barbell",    asm:"Laag 2–3"}
+// ── COMPETENTIES ──────────────────────────────────────────────
+var C={
+  "Evenwicht & Stabiliteit":{i:"ti-focus-2",a:"Laag 1–2"},
+  "Loopvormen & Sprint":{i:"ti-run",a:"Laag 1–2"},
+  "Springen & Landen":{i:"ti-arrow-bar-up",a:"Laag 1–2"},
+  "Gooien & Vangen":{i:"ti-circle",a:"Laag 1–3"},
+  "Trappen & Schieten":{i:"ti-ball-football",a:"Laag 2–3"},
+  "Samenwerken & Spelvormen":{i:"ti-users",a:"Laag 1–3"},
+  "Coördinatie & Ritme":{i:"ti-wave-sine",a:"Laag 1–2"},
+  "Kracht & Conditie":{i:"ti-barbell",a:"Laag 2–3"}
 };
 
-var OEF = [
+// ── OEFENINGEN ────────────────────────────────────────────────
+var O=[
   // EVENWICHT
-  {id:"ev1",comp:"Evenwicht & Stabiliteit",t:"Balanceer-estafette",desc:"Loop over tape-lijntjes (5 cm breed), draag bal op hoofd van A naar B. Val je, begin opnieuw. Wissel teams.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"4–8",mat:"Tape, ballen"},
-  {id:"ev2",comp:"Evenwicht & Stabiliteit",t:"Eén-been eilanden",desc:"Hoepels zijn eilanden. Spring van eiland naar eiland op één been. Wissel been elke ronde. Wie valt is 'nat'.",type:"bso",lft:["4-7"],duur:"20 min",groep:"6–12",mat:"Hoepels"},
-  {id:"ev3",comp:"Evenwicht & Stabiliteit",t:"Beeldhouwer & Standbeeld",desc:"Kind A staat stil in evenwichtspositie. Kind B kopieert exact. Wissel elke 30 sec. Probeer steeds moeilijkere houdingen.",type:"bso",lft:["4-7","7-11"],duur:"15 min",groep:"2 per paar",mat:"Geen"},
-  {id:"ev4",comp:"Evenwicht & Stabiliteit",t:"Slack-line parcours",desc:"Balanceer over 5 cm brede tape-baan (4 m lang). Extra uitdaging: gooi en vang een bal onderweg.",type:"pauze",lft:["7-11"],duur:"15 min",groep:"4–10",mat:"Tape, ballen"},
-  {id:"ev5",comp:"Evenwicht & Stabiliteit",t:"Gymnast-circuit",desc:"Station 1: koprol op mat. Station 2: balanceer 10 sec op één been. Station 3: zijwaartse stap over lijn. Punten per geslaagde poging.",type:"bso",lft:["7-11"],duur:"30 min",groep:"6–16",mat:"Matten, tape"},
-  {id:"ev6",comp:"Evenwicht & Stabiliteit",t:"Steltenlopen",desc:"Loop op lage stelten (blikken met touw) over een parcours. Probeer bochten te maken zonder te vallen.",type:"bso",lft:["4-7","7-11"],duur:"25 min",groep:"4–12",mat:"Blikken stelten of blikken"},
-  {id:"ev7",comp:"Evenwicht & Stabiliteit",t:"Wiebelplank circuit",desc:"3 stations: wiebelplank vasthouden, bal gooien op wiebelplank, blind balanceren (ogen dicht, 5 sec).",type:"bso",lft:["7-11"],duur:"25 min",groep:"4–12",mat:"Wiebelplanken, ballen"},
+  {id:"ev1",c:"Evenwicht & Stabiliteit",t:"Balanceer-estafette",d:"Loop over tape-lijntjes (5 cm), draag bal op hoofd. Val je, begin opnieuw.",g:"Statisch en dynamisch evenwicht",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"4–8",m:"Tape, ballen"},
+  {id:"ev2",c:"Evenwicht & Stabiliteit",t:"Eén-been eilanden",d:"Hoepels zijn eilanden. Spring op één been van eiland naar eiland.",g:"Unilateraal evenwicht",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"6–12",m:"Hoepels"},
+  {id:"ev3",c:"Evenwicht & Stabiliteit",t:"Beeldhouwer & Standbeeld",d:"Kind A staat stil. Kind B kopieert houding exact. Wissel elke 30 sec.",g:"Lichaamsbesef en houdingscontrole",tp:"bso",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"2 per paar",m:"Geen"},
+  {id:"ev4",c:"Evenwicht & Stabiliteit",t:"Slack-line parcours",d:"Balanceer over 5 cm tape (4 m). Extra: vang bal onderweg.",g:"Dynamisch evenwicht onder druk",tp:"pauze",lf:["7-11"],df:"m",du:"15 min",gr:"4–10",m:"Tape, ballen"},
+  {id:"ev5",c:"Evenwicht & Stabiliteit",t:"Gymnast-circuit",d:"Koprol → 10 sec op één been → zijstap over lijn. Punten per poging.",g:"Gecombineerde evenwichtsvaardigheden",tp:"bso",lf:["7-11"],df:"m",du:"30 min",gr:"6–16",m:"Matten, tape"},
+  {id:"ev6",c:"Evenwicht & Stabiliteit",t:"Steltenlopen",d:"Loop op blik-stelten over een parcours met bochten.",g:"Proprioceptie en verhoogd evenwicht",tp:"bso",lf:["4-7","7-11"],df:"m",du:"25 min",gr:"4–12",m:"Blikken-stelten"},
+  {id:"ev7",c:"Evenwicht & Stabiliteit",t:"Wiebelplank challenge",d:"3 stations: balanceren, bal gooien op wiebelplank, blind balanceren 5 sec.",g:"Reactief evenwicht en proprioceptie",tp:"bso",lf:["7-11"],df:"h",du:"25 min",gr:"4–12",m:"Wiebelplanken, ballen"},
+  {id:"ev8",c:"Evenwicht & Stabiliteit",t:"Blinde gang",d:"Ogen dicht, loop 10 m rechtdoor. Meet hoeveel je afwijkt.",g:"Kinesthetisch bewustzijn",tp:"pauze",lf:["7-11"],df:"m",du:"15 min",gr:"2–8",m:"Tape, blinddoek"},
+  {id:"ev9",c:"Evenwicht & Stabiliteit",t:"Surfen op de bank",d:"Sta op omgekeerde bank. Doe kniebuigingen zonder af te stappen.",g:"Functioneel evenwicht",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"4–10",m:"Gymbank"},
+  {id:"ev10",c:"Evenwicht & Stabiliteit",t:"Duo matzeulen",d:"Kind A staat op mat, kind B trekt mat 10 m. Wie valt af, wisselt.",g:"Dynamisch evenwicht instabiele omgeving",tp:"pauze",lf:["7-11"],df:"h",du:"20 min",gr:"4–12",m:"Matten, touw"},
   // LOOPVORMEN
-  {id:"lo1",comp:"Loopvormen & Sprint",t:"Dieren-estafette",desc:"Loop als kikker (springen), beer (op handen en voeten), krab (achteruit op vier) en slang (buikschuiven). Estafette A→B.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"4–12",mat:"Pionnen"},
-  {id:"lo2",comp:"Loopvormen & Sprint",t:"Kleurenspel",desc:"Rood = rennen, geel = stilstaan, groen = springen, blauw = draaien. Wie te laat: 3 kniebuigingen.",type:"bso",lft:["4-7"],duur:"20 min",groep:"6–20",mat:"Gekleurde kaartjes"},
-  {id:"lo3",comp:"Loopvormen & Sprint",t:"Slalom sprint",desc:"Slalom door pionnen zo snel mogelijk. Jongeren: grote pionnen ver uit elkaar. Ouderen: klein en dicht. Stopwatch per kind.",type:"pauze",lft:["4-7","7-11"],duur:"15 min",groep:"4–16",mat:"Pionnen, stopwatch"},
-  {id:"lo4",comp:"Loopvormen & Sprint",t:"Reactie-estafette",desc:"Lig op de grond. Bij fluit: sprint omhoog! Heen=sprint, terug=shuffle zijwaarts. Teamtijd bijhouden en verbeteren.",type:"pauze",lft:["7-11"],duur:"15 min",groep:"4–12",mat:"Fluitje, pionnen"},
-  {id:"lo5",comp:"Loopvormen & Sprint",t:"Interval-circuit",desc:"4 rondes: 30 sec maximale sprint, 30 sec herstelwandeling. Tussendoor vaardigheids-opdracht (gooien of springen).",type:"bso",lft:["7-11"],duur:"25 min",groep:"4–16",mat:"Pionnen, ballen"},
-  {id:"lo6",comp:"Loopvormen & Sprint",t:"Schaduwen",desc:"In tweetallen: kind A loopt vrij door de ruimte, kind B blijft op 2 m afstand volgen (schaduwen). Wissel elke 60 sec.",type:"bso",lft:["4-7","7-11"],duur:"15 min",groep:"2 per paar",mat:"Geen"},
-  {id:"lo7",comp:"Loopvormen & Sprint",t:"Tempowissels",desc:"Loop op muziek: rustig = draf, snel = sprint, stil = freeze. Begeleider regelt muziek/tempo. Eindig met snelste ronde.",type:"pauze",lft:["4-7","7-11"],duur:"15 min",groep:"6–20",mat:"Muziek/speaker"},
+  {id:"lo1",c:"Loopvormen & Sprint",t:"Dieren-estafette",d:"Kikker, beer, krab en slang. Elk dier 10 m estafette.",g:"Variatie in lokomotorische patronen",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"4–12",m:"Pionnen"},
+  {id:"lo2",c:"Loopvormen & Sprint",t:"Kleurenspel",d:"Rood=rennen, geel=stilstaan, groen=springen, blauw=draaien.",g:"Reactievermogen en luistervaardigheden",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"6–20",m:"Gekleurde kaartjes"},
+  {id:"lo3",c:"Loopvormen & Sprint",t:"Slalom sprint",d:"Slalom door pionnen zo snel mogelijk. Stopwatch bijhouden.",g:"Wendbaarheid en snelheid",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"4–16",m:"Pionnen, stopwatch"},
+  {id:"lo4",c:"Loopvormen & Sprint",t:"Reactie-estafette",d:"Lig op grond. Bij fluit: sprint! Heen=sprint, terug=shuffle.",g:"Reactietijd en startsnelheid",tp:"pauze",lf:["7-11"],df:"m",du:"15 min",gr:"4–12",m:"Fluitje, pionnen"},
+  {id:"lo5",c:"Loopvormen & Sprint",t:"Interval-circuit",d:"4 rondes: 30 sec sprint + 30 sec herstel. Tussendoor vaardigheidsopdracht.",g:"Cardiovasculaire conditie",tp:"bso",lf:["7-11"],df:"m",du:"25 min",gr:"4–16",m:"Pionnen, ballen"},
+  {id:"lo6",c:"Loopvormen & Sprint",t:"Schaduwen",d:"Kind A loopt vrij, kind B schaduut op 2 m afstand. Wissel elke 60 sec.",g:"Anticipatie en richtingsverandering",tp:"bso",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"2 per paar",m:"Geen"},
+  {id:"lo7",c:"Loopvormen & Sprint",t:"Tempowissels op muziek",d:"Rustig=draf, snel=sprint, stilte=freeze. Eindig met snelste ronde.",g:"Aanpassingsvermogen en ritmisch bewegen",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"6–20",m:"Muziek/speaker"},
+  {id:"lo8",c:"Loopvormen & Sprint",t:"T-loopje",d:"Sprint 5m voor, shuffle links, rechts, links, sprint terug. Op tijd.",g:"Agility en laterale snelheid",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"4–12",m:"Pionnen, stopwatch"},
+  {id:"lo9",c:"Loopvormen & Sprint",t:"Shuttle run 5-10-15",d:"Sprint 5 m terug, 10 m terug, 15 m terug. Op tijd. Verbeter record.",g:"Aero-anaerobe conditie",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"4–16",m:"Pionnen, stopwatch"},
+  {id:"lo10",c:"Loopvormen & Sprint",t:"Start-stop spel",d:"Lopen door ruimte. Bij Stop! zo snel mogelijk stilstaan. Wie beweegt = strafpunt.",g:"Remvermogen en lichaamsbeheer",tp:"pauze",lf:["4-7"],df:"e",du:"10 min",gr:"6–20",m:"Geen"},
+  {id:"lo11",c:"Loopvormen & Sprint",t:"Loopvormen circuit",d:"Skipping, hakkenloop, zijwaartse galop, achterwaarts lopen. Elk 15 m, 3 rondes.",g:"Looptechniek en coördinatie",tp:"bso",lf:["4-7","7-11"],df:"e",du:"20 min",gr:"4–16",m:"Pionnen"},
   // SPRINGEN
-  {id:"sp1",comp:"Springen & Landen",t:"Kikker-vijver",desc:"Hoepels zijn stenen in een vijver. Spring van steen naar steen zonder nat te worden. Wisselen van richting na 3 ronden.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"4–12",mat:"Hoepels"},
-  {id:"sp2",comp:"Springen & Landen",t:"Springtouw-estafette",desc:"Twee kinderen draaien lang touw. Anderen springen er doorheen zonder te struikelen. Record bijhouden. Wissel draaiers.",type:"pauze",lft:["4-7","7-11"],duur:"20 min",groep:"6–16",mat:"Springtouwen"},
-  {id:"sp3",comp:"Springen & Landen",t:"Verspringen met landing",desc:"Aanloop en verspringen. Focus: zachte landing, knieën buigen, voeten parallel. Meet afstand met tape. Verbreek eigen record.",type:"bso",lft:["7-11"],duur:"25 min",groep:"4–16",mat:"Tape, meetlint"},
-  {id:"sp4",comp:"Springen & Landen",t:"Hoogte-breedte circuit",desc:"Station 1: verspringen over lijn. Station 2: springen over obstakel (30 cm). Station 3: hinkelen 10 m. Roteer elke 6 min.",type:"bso",lft:["7-11"],duur:"30 min",groep:"6–16",mat:"Pionnen, obstakels, tape"},
-  {id:"sp5",comp:"Springen & Landen",t:"Sprongkettingen",desc:"Maak zo lang mogelijke ketting van sprongen: 1 been, 2 benen, huppelen, zijwaarts springen. Tel het totaal.",type:"bso",lft:["4-7"],duur:"20 min",groep:"4–12",mat:"Tape"},
-  {id:"sp6",comp:"Springen & Landen",t:"Trampolinestations",desc:"3 minitrampoline-stations: hoogte, breedte, combinatie met vangen. Begeleider beoordeelt techniek. Wissel elke 8 min.",type:"bso",lft:["7-11"],duur:"30 min",groep:"4–9",mat:"Minitrampoline, ballen"},
+  {id:"sp1",c:"Springen & Landen",t:"Kikker-vijver",d:"Hoepels zijn stenen. Spring van steen naar steen zonder nat te worden.",g:"Explosieve beenspieren en veilig afzetten",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"4–12",m:"Hoepels"},
+  {id:"sp2",c:"Springen & Landen",t:"Springtouw-estafette",d:"Twee kinderen draaien lang touw. Anderen springen erdoorheen. Record.",g:"Ritme en timing bij springen",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"20 min",gr:"6–16",m:"Springtouwen"},
+  {id:"sp3",c:"Springen & Landen",t:"Verspringen met landing",d:"Aanloop, verspringen, zachte landing (knieën buigen). Meet afstand.",g:"Horizontale sprong en landingstechniek",tp:"bso",lf:["7-11"],df:"m",du:"25 min",gr:"4–16",m:"Tape, meetlint"},
+  {id:"sp4",c:"Springen & Landen",t:"Hoogte-breedte circuit",d:"St.1: verspringen. St.2: obstakel springen. St.3: hinkelen 10 m.",g:"Variatie in springvormen",tp:"bso",lf:["7-11"],df:"m",du:"30 min",gr:"6–16",m:"Pionnen, obstakels"},
+  {id:"sp5",c:"Springen & Landen",t:"Sprongkettingen",d:"1 been, 2 benen, huppelen, zijwaarts. Tel totaal in 30 sec.",g:"Explosiviteit en coördinatie bij springen",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"4–12",m:"Tape"},
+  {id:"sp6",c:"Springen & Landen",t:"Dozen springen",d:"Spring over rij lage dozen (10–20 cm). Verhoog hoogte stap voor stap.",g:"Plyometrische kracht",tp:"bso",lf:["7-11"],df:"h",du:"25 min",gr:"4–10",m:"Lage dozen of obstakels"},
+  {id:"sp7",c:"Springen & Landen",t:"Hinkelpad",d:"Klassiek hinkelpad 1 naar 10. Progressie: ogen dicht van 1 naar 4.",g:"Ritme, balans en beencoördinatie",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"4–16",m:"Tape of krijt"},
+  {id:"sp8",c:"Springen & Landen",t:"Sprongbingo",d:"Kaarten met sprong-opdrachten. Trek een kaart en voer de sprong uit. 5 kaarten per kind.",g:"Springvariatie en motivatie",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"4–16",m:"Kaartjes, tape"},
   // GOOIEN & VANGEN
-  {id:"gv1",comp:"Gooien & Vangen",t:"Blikken-bowling",desc:"Stapel blikken tot een toren. Gooi met zachte bal. Score per toren. Wissel gooier en stapelaar na elke beurt.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"2–8",mat:"Blikken, zachte bal"},
-  {id:"gv2",comp:"Gooien & Vangen",t:"Duo-vangen afstandsopbouw",desc:"Gooi en vang met z'n tweeën. Begin op 1 m. Elke succesvolle vangst = stap terug. Wie haalt de grootste afstand?",type:"pauze",lft:["4-7"],duur:"15 min",groep:"2 per paar",mat:"Zachte ballen"},
-  {id:"gv3",comp:"Gooien & Vangen",t:"Circusgooien",desc:"Doelgooien in hoepels op 2 m, 3 m en 4 m afstand. 5 pogingen per level. Elk level = meer punten. Wissel na 5 beurten.",type:"bso",lft:["4-7"],duur:"20 min",groep:"4–12",mat:"Zakjes, hoepels"},
-  {id:"gv4",comp:"Gooien & Vangen",t:"3-op-3 streetball",desc:"Basketbal half-veld, verkorte regels. Focus op passen vóór schieten (min. 2 passes). Geen duel zonder pass.",type:"pauze",lft:["7-11"],duur:"20 min",groep:"6",mat:"Basketbal, doel"},
-  {id:"gv5",comp:"Gooien & Vangen",t:"Werptraining muur-target",desc:"Teken cirkels op muur (groot/middel/klein). Gooi vanuit 3 m, 5 m, 7 m. Techniek: stap voor, schouder draaien.",type:"bso",lft:["7-11"],duur:"25 min",groep:"4–12",mat:"Ballen, tape"},
-  {id:"gv6",comp:"Gooien & Vangen",t:"Estafette gooien",desc:"Gooi de bal van pion naar pion via teammates. Geen lopen met de bal. Wie scoort in het doel het meest in 5 min?",type:"bso",lft:["7-11"],duur:"20 min",groep:"6–12",mat:"Ballen, pionnen, doel"},
-  {id:"gv7",comp:"Gooien & Vangen",t:"Vanglenimenspel",desc:"Gooi hoog op, laat één keer stuiteren, vang. Vergroting: gooi naar partner met 1 stuit. Start dichtbij, bouw afstand op.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"2–8",mat:"Ballen"},
+  {id:"gv1",c:"Gooien & Vangen",t:"Blikken-bowling",d:"Stapel blikken. Gooi met zachte bal. Score per beurt bijhouden.",g:"Oog-hand coördinatie en nauwkeurigheid",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"2–8",m:"Blikken, zachte bal"},
+  {id:"gv2",c:"Gooien & Vangen",t:"Duo-vangen afstandsopbouw",d:"Gooi en vang. Elke vangst = stap terug. Wie haalt de grootste afstand?",g:"Vangtechniek en diepte-inschatting",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"2 per paar",m:"Zachte ballen"},
+  {id:"gv3",c:"Gooien & Vangen",t:"Circusgooien",d:"Gooi zakje in hoepel op 2, 3 en 4 m. Elk niveau meer punten.",g:"Gooinauwkeurigheid en krachtsturing",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"4–12",m:"Zakjes, hoepels"},
+  {id:"gv4",c:"Gooien & Vangen",t:"3-op-3 streetball",d:"Basketbal half-veld. Min. 2 passes voor schot. Focus op samenwerking.",g:"Passen, vangen en ruimtegebruik",tp:"pauze",lf:["7-11"],df:"m",du:"20 min",gr:"6",m:"Basketbal, doel"},
+  {id:"gv5",c:"Gooien & Vangen",t:"Werptraining muur-target",d:"Cirkels op muur. Gooi van 3, 5 en 7 m. Techniek: stap voor, schouder draaien.",g:"Gooimechanisme en krachtontwikkeling",tp:"bso",lf:["7-11"],df:"m",du:"25 min",gr:"4–12",m:"Ballen, tape"},
+  {id:"gv6",c:"Gooien & Vangen",t:"Estafette-gooien",d:"Pas bal via teammates zonder te lopen. Scoort meest in 5 min?",g:"Snel passen en ruimte benutten",tp:"bso",lf:["7-11"],df:"m",du:"20 min",gr:"6–12",m:"Ballen, pionnen, doel"},
+  {id:"gv7",c:"Gooien & Vangen",t:"Stuitervangen",d:"Gooi hoog op, 1 stuit, vang. Progressie: naar partner met 1 stuit.",g:"Timing en anticipatie",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"2–8",m:"Ballen"},
+  {id:"gv8",c:"Gooien & Vangen",t:"Tweetal spiegelgooien",d:"Gooi en vang simultaan met partner. Beiden gooien tegelijk.",g:"Hogere coördinatie en timing",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"2 per paar",m:"Ballen"},
+  {id:"gv9",c:"Gooien & Vangen",t:"Gooien over touw",d:"Gooi over touw (borsthoogte) naar partner. Steeds verder weg.",g:"Verhoogd gooien en gerichte vangst",tp:"pauze",lf:["7-11"],df:"m",du:"20 min",gr:"2 per paar",m:"Touw, ballen"},
+  {id:"gv10",c:"Gooien & Vangen",t:"Raakbal",d:"Gooi de bal en probeer een lopend kind te raken (onder de schouders). Wie het meest geraakt = verliezer.",g:"Nauwkeurig gooien op bewegend doel",tp:"pauze",lf:["4-7","7-11"],df:"m",du:"15 min",gr:"6–16",m:"Zachte ballen"},
   // TRAPPEN
-  {id:"tr1",comp:"Trappen & Schieten",t:"Doelpunt of mis?",desc:"Stil liggende bal schieten in een groot doel (pionnen) op 4 m. Na 4 treffers: doel verkleinen of afstand naar 6 m.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"2–6",mat:"Bal, pionnen"},
-  {id:"tr2",comp:"Trappen & Schieten",t:"Keepertje",desc:"1 keeper (2 m breed doel). Schutters om beurten. Na 5 schoten keeper wisselen. Wie scoort meest als keeper?",type:"pauze",lft:["4-7","7-11"],duur:"20 min",groep:"4–8",mat:"Bal, doel"},
-  {id:"tr3",comp:"Trappen & Schieten",t:"Hoepel in het doel",desc:"Hang hoepel in doel. Schiet erdoorheen vanuit 4 m, 6 m, 8 m. 3 punten per treffer. Welke afstand lukt nog?",type:"bso",lft:["7-11"],duur:"20 min",groep:"2–8",mat:"Bal, doel, hoepel"},
-  {id:"tr4",comp:"Trappen & Schieten",t:"Schietcircuit 3 stations",desc:"St.1: stilstaand links schieten. St.2: aangespeelde bal rechts. St.3: loopaanloop vrij schieten. Roteer na 8 min.",type:"bso",lft:["7-11"],duur:"30 min",groep:"6–12",mat:"Ballen, doelen, pionnen"},
-  {id:"tr5",comp:"Trappen & Schieten",t:"Passingvierkant",desc:"4 pionnen = vierkant (8×8 m). Pas de bal rond het vierkant, volg je eigen pass. Verhoog tempo elke ronde.",type:"bso",lft:["7-11"],duur:"20 min",groep:"4–8",mat:"Ballen, pionnen"},
-  {id:"tr6",comp:"Trappen & Schieten",t:"Voetbaltennis",desc:"Net van touw (kniehoogte). Speel de bal over het net met voet of hoofd. 1v1 of 2v2. Bal mag één keer stuiteren.",type:"pauze",lft:["7-11"],duur:"20 min",groep:"2–4",mat:"Touw, ballen, pionnen"},
+  {id:"tr1",c:"Trappen & Schieten",t:"Doelpunt of mis?",d:"Stil bal schieten in groot doel op 4 m. Na 4 treffers: kleiner doel.",g:"Basisschottechniek en nauwkeurigheid",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"2–6",m:"Bal, pionnen"},
+  {id:"tr2",c:"Trappen & Schieten",t:"Keepertje",d:"1 keeper op doel van 2 m. Schutters om beurten. Na 5 schoten keeper wisselen.",g:"Schiettechniek en keepvaardigheden",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"20 min",gr:"4–8",m:"Bal, doel"},
+  {id:"tr3",c:"Trappen & Schieten",t:"Hoepel in het doel",d:"Schiet bal door hangende hoepel. Afstanden: 4, 6, 8 m.",g:"Precisieschieten en krachtbeheer",tp:"bso",lf:["7-11"],df:"m",du:"20 min",gr:"2–8",m:"Bal, doel, hoepel"},
+  {id:"tr4",c:"Trappen & Schieten",t:"Schietcircuit 3 stations",d:"St.1: stilstaand links. St.2: aangespeeld rechts. St.3: loopaanloop vrij.",g:"Variatie in schietvormen",tp:"bso",lf:["7-11"],df:"m",du:"30 min",gr:"6–12",m:"Ballen, doelen, pionnen"},
+  {id:"tr5",c:"Trappen & Schieten",t:"Passingvierkant",d:"Pas bal rond vierkant (8x8 m), volg je eigen pass. Tempo verhogen.",g:"Passnauwkeurigheid en loopgedrag",tp:"bso",lf:["7-11"],df:"m",du:"20 min",gr:"4–8",m:"Ballen, pionnen"},
+  {id:"tr6",c:"Trappen & Schieten",t:"Voetbaltennis",d:"Bal over touw (kniehoogte). 1 stuit. 1v1 of 2v2.",g:"Controle en tactisch schieten",tp:"pauze",lf:["7-11"],df:"m",du:"20 min",gr:"2–4",m:"Touw, ballen, pionnen"},
+  {id:"tr7",c:"Trappen & Schieten",t:"Dribbel en schiet",d:"Dribbel door slalomparcours, eindig met schot op doel. Op tijd.",g:"Gecombineerde dribbelvaardigheden",tp:"bso",lf:["7-11"],df:"h",du:"25 min",gr:"4–12",m:"Pionnen, ballen, doel"},
+  {id:"tr8",c:"Trappen & Schieten",t:"Zwak been training",d:"Alles met het zwakke been: passen, schieten, dribbelen.",g:"Bilaterale beenvaardigheid",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"4–12",m:"Ballen, pionnen"},
+  {id:"tr9",c:"Trappen & Schieten",t:"Botsauto's",d:"Iedereen heeft bal, probeert ballen van anderen weg te schoppen. Eigen bal bewaken.",g:"Balbeheersing en ruimtebewustzijn",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"6–20",m:"Ballen per kind"},
   // SAMENWERKEN
-  {id:"sa1",comp:"Samenwerken & Spelvormen",t:"Duo-hoepel transport",desc:"Twee kinderen houden samen één hoepel vast (elk één kant) en lopen van A naar B zonder hoepel te laten vallen.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"2 per paar",mat:"Hoepels"},
-  {id:"sa2",comp:"Samenwerken & Spelvormen",t:"Eilandenspel",desc:"Groep staat op krimpende eilanden (matten). Samen overleven: niemand op de grond. Na elke ronde kleiner. Hoe lang?",type:"bso",lft:["4-7"],duur:"20 min",groep:"6–20",mat:"Matten of kranten"},
-  {id:"sa3",comp:"Samenwerken & Spelvormen",t:"Mensenknoop",desc:"Kring, pak willekeurig handen vast (niet de buur). Ontwarren zonder los te laten. Hoeveel seconden?",type:"bso",lft:["4-7","7-11"],duur:"15 min",groep:"6–12",mat:"Geen"},
-  {id:"sa4",comp:"Samenwerken & Spelvormen",t:"Kleine partijvormen 2v2",desc:"2v2 op klein veld (10×10 m). Veel balcontact, snel denken. Gescoord = wachten, verloren = wachten. Winst = blijven.",type:"pauze",lft:["7-11"],duur:"20 min",groep:"4–12",mat:"Bal, kleine doelen"},
-  {id:"sa5",comp:"Samenwerken & Spelvormen",t:"Sportcircuit roulatie",desc:"3 stations van 8 min: volleybal-baggeren, voetbal-dribbel, basketbal-lay-up. Groep roteert samen. Evalueer na afloop.",type:"bso",lft:["7-11"],duur:"30 min",groep:"6–18",mat:"Volleybal, voetbal, basketbal"},
-  {id:"sa6",comp:"Samenwerken & Spelvormen",t:"Blinde gids",desc:"Eén kind heeft ogen dicht, ander geeft mondeling aanwijzingen door een parcours. Wissel na elke ronde. Vertrouwen oefenen.",type:"bso",lft:["4-7","7-11"],duur:"20 min",groep:"2 per paar",mat:"Pionnen, blinddoek"},
-  {id:"sa7",comp:"Samenwerken & Spelvormen",t:"Reddingsring",desc:"Groep moet met een touw (cirkel) elk teamlid oppikken zonder dat iemand de 'zee' (grond) aanraakt. Matten zijn eilanden.",type:"bso",lft:["7-11"],duur:"20 min",groep:"6–12",mat:"Touw, matten"},
-  // COÖRDINATIE
-  {id:"co1",comp:"Coördinatie & Ritme",t:"Klap-stap-spel",desc:"Begeleider klapt een ritme. Kinderen stampen het exact mee. Verhoog tempo elke 30 sec. Wie volgt het langst?",type:"pauze",lft:["4-7"],duur:"10 min",groep:"4–20",mat:"Geen"},
-  {id:"co2",comp:"Coördinatie & Ritme",t:"Muzikale hoepels bewegen",desc:"Muziek aan = creatief bewegen (springen, kruipen, draaien). Muziek stopt = spring in hoepel. Steeds een hoepel minder.",type:"pauze",lft:["4-7"],duur:"15 min",groep:"6–20",mat:"Hoepels, muziek"},
-  {id:"co3",comp:"Coördinatie & Ritme",t:"Spiegelspel",desc:"In tweetallen: één leidt alle bewegingen, ander spiegelt exact. Doel: zo vloeiend mogelijk. Wissel leider elke minuut.",type:"bso",lft:["4-7","7-11"],duur:"15 min",groep:"2 per paar",mat:"Geen"},
-  {id:"co4",comp:"Coördinatie & Ritme",t:"Coördinatieladder",desc:"Patronen: 2 voeten per vak, 1 voet, zijwaarts, kruispas, skipping. Elk patroon 3x. Focus op voetplaatsing.",type:"bso",lft:["7-11"],duur:"20 min",groep:"4–12",mat:"Laddermat of tape"},
-  {id:"co5",comp:"Coördinatie & Ritme",t:"Klap-gooi combinatie",desc:"Klap 2x in handen, gooi bal omhoog, vang. Progressie: klap 3x, draai 360°, vang. Hoe ver kun je gaan?",type:"pauze",lft:["4-7","7-11"],duur:"15 min",groep:"4–16",mat:"Ballen"},
-  {id:"co6",comp:"Coördinatie & Ritme",t:"Dansbeweging sport",desc:"Leer een korte dans van 8 tellen (stap-stap-spring-draai). Groep leert het samen. Pas het aan met sportbewegingen.",type:"bso",lft:["4-7","7-11"],duur:"20 min",groep:"6–20",mat:"Muziek/speaker"},
+  {id:"sa1",c:"Samenwerken & Spelvormen",t:"Duo-hoepel transport",d:"Twee kinderen houden samen één hoepel vast. Lopen A naar B zonder vallen.",g:"Communicatie en afstemming",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"2 per paar",m:"Hoepels"},
+  {id:"sa2",c:"Samenwerken & Spelvormen",t:"Eilandenspel",d:"Groep op krimpende matten. Niemand op de grond. Hoe lang overleven?",g:"Probleemoplossing en groepsdynamiek",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"6–20",m:"Matten of kranten"},
+  {id:"sa3",c:"Samenwerken & Spelvormen",t:"Mensenknoop",d:"Kring, pak willekeurig handen. Ontwarren zonder loslaten.",g:"Communicatie en ruimtelijk denken",tp:"bso",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"6–12",m:"Geen"},
+  {id:"sa4",c:"Samenwerken & Spelvormen",t:"Kleine partijvormen 2v2",d:"2v2 op 10x10 m. Gescoord=wachten, verloren=wachten. Winst=blijven.",g:"Tactisch bewustzijn en teamdynamiek",tp:"pauze",lf:["7-11"],df:"m",du:"20 min",gr:"4–12",m:"Bal, kleine doelen"},
+  {id:"sa5",c:"Samenwerken & Spelvormen",t:"Sportcircuit roulatie",d:"3 stations x 8 min: volleybal-baggeren, voetbal-dribbel, basketbal-lay-up.",g:"Multi-sport vaardigheidsontwikkeling",tp:"bso",lf:["7-11"],df:"m",du:"30 min",gr:"6–18",m:"Volleybal, voetbal, basketbal"},
+  {id:"sa6",c:"Samenwerken & Spelvormen",t:"Blinde gids",d:"Ogen dicht door parcours. Partner geeft mondeling aanwijzingen.",g:"Vertrouwen en verbale communicatie",tp:"bso",lf:["4-7","7-11"],df:"m",du:"20 min",gr:"2 per paar",m:"Pionnen, blinddoek"},
+  {id:"sa7",c:"Samenwerken & Spelvormen",t:"Reddingsring",d:"Groep moet met touwring elk teamlid oppikken. Matten zijn eilanden.",g:"Strategisch samenwerken",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"6–12",m:"Touw, matten"},
+  {id:"sa8",c:"Samenwerken & Spelvormen",t:"Estafette-olympiade",d:"5 mini-disciplines als estafette. Team kiest zelf de disciplines.",g:"Teamplanning en uitvoering",tp:"bso",lf:["4-7","7-11"],df:"m",du:"30 min",gr:"6–16",m:"Divers"},
+  {id:"sa9",c:"Samenwerken & Spelvormen",t:"Trefbal varianten",d:"Klassiek trefbal, dan: iedereen kan redden, bal mag niet stuiten, etc.",g:"Bewegingsvaardigheden en sportieve interactie",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"20 min",gr:"8–20",m:"Zachte ballen"},
+  {id:"sa10",c:"Samenwerken & Spelvormen",t:"Politie & Rover",d:"Politie probeert rovers te pakken en in gevangenis te stoppen. Rovers kunnen bevrijd worden.",g:"Snelheid, samenwerken en strategie",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"20 min",gr:"8–20",m:"Pionnen (gevangenis)"},
+  // COORDINATIE
+  {id:"co1",c:"Coördinatie & Ritme",t:"Klap-stap-spel",d:"Begeleider klapt ritme. Kinderen stampen mee. Tempo verhogen.",g:"Auditieve motoriek en ritmesynchronisatie",tp:"pauze",lf:["4-7"],df:"e",du:"10 min",gr:"4–20",m:"Geen"},
+  {id:"co2",c:"Coördinatie & Ritme",t:"Muzikale hoepels",d:"Muziek=creatief bewegen. Stilte=spring in hoepel. Steeds minder hoepels.",g:"Ruimtelijk bewustzijn en reactievermogen",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"6–20",m:"Hoepels, muziek"},
+  {id:"co3",c:"Coördinatie & Ritme",t:"Spiegelspel",d:"Eén leidt, ander spiegelt exact. Zo vloeiend mogelijk. Wissel per minuut.",g:"Interactieve coördinatie en anticipatie",tp:"bso",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"2 per paar",m:"Geen"},
+  {id:"co4",c:"Coördinatie & Ritme",t:"Coördinatieladder",d:"Patronen: 2 voeten per vak, 1 voet, zijwaarts, kruispas, skipping.",g:"Voetcoördinatie en snelheid",tp:"bso",lf:["7-11"],df:"m",du:"20 min",gr:"4–12",m:"Laddermat of tape"},
+  {id:"co5",c:"Coördinatie & Ritme",t:"Klap-gooi combinatie",d:"Klap 2x, gooi bal omhoog, vang. Progressie: klap 3x, draai 360 graden.",g:"Bilaterale coördinatie en timing",tp:"pauze",lf:["4-7","7-11"],df:"m",du:"15 min",gr:"4–16",m:"Ballen"},
+  {id:"co6",c:"Coördinatie & Ritme",t:"Sport-dans",d:"8-tels sportdans leren. Groep leert samen, dan sneller uitvoeren.",g:"Ritmisch bewegen en bewegingsgeheugen",tp:"bso",lf:["4-7","7-11"],df:"m",du:"20 min",gr:"6–20",m:"Muziek/speaker"},
+  {id:"co7",c:"Coördinatie & Ritme",t:"Reactie-kleurenkaart",d:"Begeleider steekt gekleurde kaart omhoog. Elke kleur = andere beweging.",g:"Visuele reactie en bewegingskeuze",tp:"pauze",lf:["4-7","7-11"],df:"m",du:"15 min",gr:"6–20",m:"Gekleurde kaarten"},
+  {id:"co8",c:"Coördinatie & Ritme",t:"Juggelen basis",d:"Leer jongleren: 1 bal opgooien en vangen, dan 2. Hoe ver kom je?",g:"Oog-hand coördinatie en concentratie",tp:"bso",lf:["7-11"],df:"h",du:"25 min",gr:"4–12",m:"Jongleerballen"},
+  {id:"co9",c:"Coördinatie & Ritme",t:"Bal-tikspel",d:"Loop met bal terwijl je de bal met de hand tikt (dribbelend). Pak andermans bal af.",g:"Dribbelcoördinatie en ruimtelijk bewustzijn",tp:"pauze",lf:["7-11"],df:"m",du:"15 min",gr:"6–16",m:"Ballen per kind"},
   // KRACHT
-  {id:"kr1",comp:"Kracht & Conditie",t:"Dierenloop-circuit",desc:"Beer (handen+voeten), kikker (springen), krab (achteruit), slang (buikschuiven). Per dier 10 m. 3 rondes.",type:"bso",lft:["4-7"],duur:"20 min",groep:"4–16",mat:"Pionnen"},
-  {id:"kr2",comp:"Kracht & Conditie",t:"Trekspel",desc:"Trek partner over lijn met touw. Jongeren: beide handen op gelijke grond. Ouderen: varieer houding en richting. Best of 3.",type:"pauze",lft:["4-7","7-11"],duur:"15 min",groep:"2 per paar",mat:"Touw, tape"},
-  {id:"kr3",comp:"Kracht & Conditie",t:"Krachtstations circuit",desc:"4 stations × 40 sec: kniebuigingen, plank vasthouden, sit-ups, wandelen op handen (5 m heen+terug). 20 sec rust.",type:"bso",lft:["7-11"],duur:"25 min",groep:"4–16",mat:"Matten"},
-  {id:"kr4",comp:"Kracht & Conditie",t:"Survivalparcours",desc:"Klim over bank, kruip onder touw (50 cm), spring op mat, loop over evenwichtsbalk. Op tijd. Verbeter eigen record.",type:"bso",lft:["7-11"],duur:"30 min",groep:"4–16",mat:"Banken, touw, matten, balk"},
-  {id:"kr5",comp:"Kracht & Conditie",t:"Zandzak-stoeiworstelen",desc:"Draag een 'zandzak' (stoffen tas met gewicht) over 10 m zo snel mogelijk. Race tegen klasgenoot.",type:"bso",lft:["7-11"],duur:"15 min",groep:"2–8",mat:"Stoffen tassen, zand/vulling"},
-  {id:"kr6",comp:"Kracht & Conditie",t:"Brandweer-challenge",desc:"Sprint 10 m, 5 kniebuigingen, sprint terug, 5 sit-ups. Zo snel mogelijk. Wissel partner. Klok op.",type:"pauze",lft:["7-11"],duur:"15 min",groep:"4–12",mat:"Stopwatch, matten"}
+  {id:"kr1",c:"Kracht & Conditie",t:"Dierenloop-circuit",d:"Beer, kikker, krab, slang. Per dier 10 m. 3 rondes.",g:"Functionele kracht en lichaamsspanning",tp:"bso",lf:["4-7"],df:"e",du:"20 min",gr:"4–16",m:"Pionnen"},
+  {id:"kr2",c:"Kracht & Conditie",t:"Trekspel",d:"Trek partner over lijn met touw. Best of 3.",g:"Rompkracht en grip-kracht",tp:"pauze",lf:["4-7","7-11"],df:"e",du:"15 min",gr:"2 per paar",m:"Touw, tape"},
+  {id:"kr3",c:"Kracht & Conditie",t:"Krachtstations circuit",d:"4x40 sec: kniebuigingen, plank, sit-ups, handwandelen. 20 sec rust.",g:"Globale lichaamskracht en conditie",tp:"bso",lf:["7-11"],df:"m",du:"25 min",gr:"4–16",m:"Matten"},
+  {id:"kr4",c:"Kracht & Conditie",t:"Survivalparcours",d:"Klim over bank, kruip onder touw, spring op mat, loop over balk. Op tijd.",g:"Functionele kracht en uithouding",tp:"bso",lf:["7-11"],df:"m",du:"30 min",gr:"4–16",m:"Banken, touw, matten, balk"},
+  {id:"kr5",c:"Kracht & Conditie",t:"Brandweer-challenge",d:"Sprint 10 m, 5 kniebuigingen, terug, 5 sit-ups. Zo snel mogelijk.",g:"Snelkracht en cardio-uithouding",tp:"pauze",lf:["7-11"],df:"m",du:"15 min",gr:"4–12",m:"Stopwatch, matten"},
+  {id:"kr6",c:"Kracht & Conditie",t:"Sterke rug",d:"Buikligging: vliegtuigpositie (armen en benen omhoog). 3x10.",g:"Rugkracht en houding",tp:"bso",lf:["7-11"],df:"e",du:"15 min",gr:"4–16",m:"Matten"},
+  {id:"kr7",c:"Kracht & Conditie",t:"Wall-sit uitdaging",d:"Wie houdt wall-sit het langst vol? Groepsrecord bijhouden.",g:"Statische spierkracht en mentale weerbaarheid",tp:"pauze",lf:["7-11"],df:"m",du:"10 min",gr:"4–20",m:"Muur"},
+  {id:"kr8",c:"Kracht & Conditie",t:"Bankpush circuit",d:"Duw gymbank met partner erop over 10 m. Wissel. 4 rondes.",g:"Duwkracht en samenwerking",tp:"bso",lf:["7-11"],df:"h",du:"20 min",gr:"4–8",m:"Gymbanken"},
+  {id:"kr9",c:"Kracht & Conditie",t:"Berenloop races",d:"Op handen en knieën zo snel mogelijk 10 m. Race, dan slalom.",g:"Schouder- en rompkracht",tp:"pauze",lf:["4-7"],df:"e",du:"15 min",gr:"4–12",m:"Pionnen"},
+  {id:"kr10",c:"Kracht & Conditie",t:"Springkracht circuit",d:"3 stations: verspringen, omhoogspringen, sprong met draai. 6x per station.",g:"Explosieve beenkracht",tp:"bso",lf:["7-11"],df:"h",du:"25 min",gr:"4–12",m:"Matten, tape"}
 ];
 
-// ═══════════════════════════════════════════════
-// STATE
-// ═══════════════════════════════════════════════
-var age='4-7', selComp=null, typeFilter='alle';
-var week=1, maxWeek=4;
-var libAge='4-7', libComp=null;
+// ── STATE ─────────────────────────────────────────────────────
+var age='4-7', sc=null, tf='alle', df={e:true,m:true,h:true};
+var wk=1, mxWk=8, lAge='4-7', lComp=null;
 var days=['Maandag','Dinsdag','Woensdag','Donderdag','Vrijdag'];
+// 3 pauze slots + 3 bso slots per dag
+var SLOTS_P=3, SLOTS_B=3;
 
-// schedule[week][age][day] = {pauze:oef|null, bso:oef|null, theme:''}
-var schedule={};
-for(var w=1;w<=maxWeek;w++){
-  schedule[w]={};
-  ['4-7','7-11'].forEach(function(a){
-    schedule[w][a]={};
-    days.forEach(function(d){ schedule[w][a][d]={pauze:null,bso:null,theme:''}; });
-  });
-}
-
-function lsKey(){return 'asm3_sched';}
-function lsCustomKey(){return 'asm3_custom';}
-
-function saveAll(){
-  try{localStorage.setItem(lsKey(),JSON.stringify(schedule));}catch(e){}
-  var n=document.getElementById('sf');
-  n.classList.add('on');
-  clearTimeout(n._t);
-  n._t=setTimeout(function(){n.classList.remove('on');},2000);
-}
-
-function loadAll(){
-  try{
-    var s=localStorage.getItem(lsKey());
-    if(s) schedule=JSON.parse(s);
-    var c=localStorage.getItem(lsCustomKey());
-    if(c){
-      JSON.parse(c).forEach(function(o){
-        if(!OEF.find(function(x){return x.id===o.id;})) OEF.push(o);
+// schedule[week][age][day].pauze = [oef|null, oef|null, oef|null]
+//                         .bso   = [oef|null, oef|null, oef|null]
+//                         .theme = ''
+var S={};
+function initS(){
+  for(var w=1;w<=mxWk;w++){
+    S[w]={};
+    ['4-7','7-11'].forEach(function(a){
+      S[w][a]={};
+      days.forEach(function(d){
+        S[w][a][d]={
+          pauze:[null,null,null],
+          bso:[null,null,null],
+          theme:''
+        };
       });
-    }
+    });
+  }
+}
+initS();
+
+var GRP=[];
+
+// Selecting state: which oef is pending placement
+var selOef=null; // {id, tp}
+
+// ── PERSIST ───────────────────────────────────────────────────
+function load(){
+  try{
+    var s=localStorage.getItem('a5s');if(s) S=JSON.parse(s);
+    var c=localStorage.getItem('a5c');if(c) JSON.parse(c).forEach(function(o){if(!O.find(function(x){return x.id===o.id;})) O.push(o);});
+    var g=localStorage.getItem('a5g');if(g) GRP=JSON.parse(g);
+  }catch(e){}
+}
+function save(){
+  try{
+    localStorage.setItem('a5s',JSON.stringify(S));
+    localStorage.setItem('a5c',JSON.stringify(O.filter(function(o){return o.custom;})));
+    localStorage.setItem('a5g',JSON.stringify(GRP));
+    var n=document.getElementById('sf');
+    n.classList.add('on');clearTimeout(n._t);
+    n._t=setTimeout(function(){n.classList.remove('on');},2000);
   }catch(e){}
 }
 
-function getSlot(day){return schedule[week][age][day];}
+// ── HELPERS ───────────────────────────────────────────────────
+function ex(s){return(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');}
+function dlbl(d){return{e:'Makkelijk',m:'Gemiddeld',h:'Moeilijk'}[d]||'';}
+function dcls(d){return{e:'dbe',m:'dbm',h:'dbh'}[d]||'';}
+function gday(d){return S[wk][age][d];}
+function getOef(id){return O.find(function(x){return x.id===id;});}
 
+// ── AGE / WEEK / FILTERS ──────────────────────────────────────
 function setAge(a){
   age=a;
-  document.getElementById('a47').className='age-opt'+(a==='4-7'?' on':'');
-  document.getElementById('a711').className='age-opt'+(a==='7-11'?' on':'');
-  updateSchTitle();renderAll();
+  document.getElementById('a47').className='ao'+(a==='4-7'?' on':'');
+  document.getElementById('a711').className='ao'+(a==='7-11'?' on':'');
+  updT();cancelSel();rAll();
 }
-function changeWeek(d){
-  week=Math.max(1,Math.min(maxWeek,week+d));
-  document.getElementById('weekLbl').textContent='Week '+week;
-  updateSchTitle();renderAll();
+function chWk(d){
+  wk=Math.max(1,Math.min(mxWk,wk+d));
+  document.getElementById('wlbl').textContent='Week '+wk;
+  updT();cancelSel();rAll();
 }
 function setTF(t){
-  typeFilter=t;
-  ['a','p','b'].forEach(function(x){document.getElementById('tf-'+x).className='tf'+(t==={a:'alle',p:'pauze',b:'bso'}[x]?' on':'');});
-  renderOef();
+  tf=t;
+  ['a','p','b'].forEach(function(x){
+    document.getElementById('tf'+x).className='tf'+({a:'alle',p:'pauze',b:'bso'}[x]===t?' on':'');
+  });
+  rOef();
 }
-function updateSchTitle(){
-  document.getElementById('schTitle').textContent='Week '+week+' — '+age+' jaar';
-  document.getElementById('prtTitle').textContent='ASM Weekschema — Week '+week;
-  document.getElementById('prtMeta').textContent=age+' jaar | '+new Date().toLocaleDateString('nl-NL');
+function togDF(d){
+  df[d]=!df[d];
+  document.getElementById('df'+d).className='df'+({e:' de',m:' dm',h:' dh'}[d])+(df[d]?' on':'');
+  rOef();
 }
-function clearWeek(){
-  if(!confirm('Week '+week+' leegmaken?')) return;
-  days.forEach(function(d){schedule[week][age][d]={pauze:null,bso:null,theme:''};});
-  saveAll();renderAll();
-}
-function removeSlot(day,slot){
-  schedule[week][age][day][slot]=null;
-  saveAll();renderAll();
-}
-function addToDay(id,day,slot){
-  var o=OEF.find(function(x){return x.id===id;});
-  if(!o) return;
-  schedule[week][age][day][slot]=JSON.parse(JSON.stringify(o));
-  saveAll();renderAll();
-}
-function saveTheme(day,val){
-  schedule[week][age][day].theme=val;
-  saveAll();
+function updT(){document.getElementById('shtl').textContent='Week '+wk+' — '+age+' jaar';}
+function clearWk(){
+  if(!confirm('Week '+wk+' leegmaken?')) return;
+  days.forEach(function(d){S[wk][age][d]={pauze:[null,null,null],bso:[null,null,null],theme:''};});
+  save();cancelSel();rAll();
 }
 
-// ═══════════════════════════════════════════════
-// RENDER PLANNER
-// ═══════════════════════════════════════════════
-function renderWeek(){
-  var g=document.getElementById('weekGrid');
-  g.innerHTML='';
+// ── SELECTION WORKFLOW ────────────────────────────────────────
+function startSel(oefId){
+  var o=getOef(oefId);if(!o) return;
+  selOef=o;
+  document.getElementById('selBanner').classList.add('on');
+  document.getElementById('selBannerTxt').textContent=
+    '"'+o.t+'" — klik op een leeg '+( o.tp==='pauze'?'Pauzesport':'BSO')+'-slot in het schema';
+  rWGrid(); // re-render so empty slots highlight
+}
+function cancelSel(){
+  selOef=null;
+  document.getElementById('selBanner').classList.remove('on');
+  rWGrid();
+}
+function placeInSlot(day, tp, idx){
+  if(!selOef) return;
+  if(selOef.tp!==tp){
+    alert('Dit is een '+dlbl2(selOef.tp)+'-oefening. Kies een '+dlbl2(selOef.tp)+'-slot.');
+    return;
+  }
+  S[wk][age][day][tp][idx]=JSON.parse(JSON.stringify(selOef));
+  save();cancelSel();rAll();
+}
+function dlbl2(tp){return tp==='pauze'?'Pauzesport':'BSO';}
+function rmSlot(day,tp,idx){
+  S[wk][age][day][tp][idx]=null;
+  save();rAll();
+}
+function sTheme(day,v){S[wk][age][day].theme=v;save();}
+
+// ── RENDER WEEK GRID ─────────────────────────────────────────
+function rWGrid(){
+  var g=document.getElementById('wgrid');g.innerHTML='';
+  var cls=['h0','h1','h2','h3','h4'];
   days.forEach(function(day,di){
-    var sl=getSlot(day);
-    var p=sl.pauze, b=sl.bso;
-    var html='<div class="day-card">'
-      +'<div class="day-hdr dc-'+di+'">'
-      +'<span class="day-name">'+day+'</span>'
-      +'<input class="day-theme-inp" placeholder="thema..." value="'+esc(sl.theme)+'" onchange="saveTheme(\''+day+'\',this.value)">'
+    var sl=gday(day);
+    var h='<div class="dc">'
+      +'<div class="dch '+cls[di]+'">'
+      +'<span class="dcn">'+day+'</span>'
+      +'<input class="dct" placeholder="thema..." value="'+ex(sl.theme)+'" onchange="sTheme(\''+day+'\',this.value)">'
       +'</div>'
-      +'<div class="day-body">';
-    [{slot:'pauze',item:p,label:'Pauzesport'},{slot:'bso',item:b,label:'BSO'}].forEach(function(s){
-      html+='<div><div class="slot-lbl">'+s.label+'</div>';
-      if(s.item){
-        html+='<div class="slot-filled">'
-          +'<div class="slot-info">'
-          +'<div class="slot-name">'+esc(s.item.t)+'</div>'
-          +'<div class="slot-meta"><i class="ti ti-clock" style="font-size:11px"></i> '+esc(s.item.duur)+'  <i class="ti ti-package" style="font-size:11px"></i> '+esc(s.item.mat)+'</div>'
-          +'</div>'
-          +'<button class="slot-x" onclick="removeSlot(\''+day+'\',\''+s.slot+'\')" aria-label="Verwijder"><i class="ti ti-x"></i></button>'
-          +'</div>';
-      }else{
-        html+='<div class="slot-empty">Nog leeg</div>';
-      }
-      html+='</div>';
-    });
-    html+='</div></div>';
-    g.innerHTML+=html;
+      +'<div class="dcb">';
+
+    // PAUZE slots
+    h+='<div class="slot-group-lbl pauze"><i class="ti ti-sun" style="font-size:11px"></i> Pauzesport</div>';
+    for(var pi=0;pi<SLOTS_P;pi++){
+      h+=renderSlot(sl.pauze[pi], day, 'pauze', pi);
+    }
+    // BSO slots
+    h+='<div class="slot-group-lbl bso"><i class="ti ti-building" style="font-size:11px"></i> BSO</div>';
+    for(var bi=0;bi<SLOTS_B;bi++){
+      h+=renderSlot(sl.bso[bi], day, 'bso', bi);
+    }
+
+    h+='</div></div>';
+    g.innerHTML+=h;
   });
 }
 
-function renderComp(){
-  var cl=document.getElementById('compList');
-  cl.innerHTML='';
-  Object.keys(COMPS).forEach(function(name){
-    var c=COMPS[name];
+function renderSlot(oef, day, tp, idx){
+  if(oef){
+    return '<div class="slot filled">'
+      +'<div class="slot-inner">'
+      +'<div class="slot-txt">'
+      +'<div class="slot-nm">'+ex(oef.t)+'</div>'
+      +'<div class="slot-meta"><i class="ti ti-clock" style="font-size:10px"></i> '+ex(oef.du)+'</div>'
+      +'</div>'
+      +'<button class="slot-rm" onclick="rmSlot(\''+day+'\',\''+tp+'\','+idx+')" title="Verwijder"><i class="ti ti-x"></i></button>'
+      +'</div>'
+      +'</div>';
+  }
+  // empty slot
+  var canHighlight = selOef && selOef.tp===tp;
+  var hlCls = canHighlight ? ' highlight' : '';
+  return '<div class="slot empty'+hlCls+'" onclick="placeInSlot(\''+day+'\',\''+tp+'\','+idx+')">'
+    +(canHighlight ? '<i class="ti ti-plus" style="font-size:12px;margin-right:3px"></i> Klik om te plaatsen' : '+ leeg slot')
+    +'</div>';
+}
+
+// ── RENDER COMPETENTIES ───────────────────────────────────────
+function rComp(){
+  var cl=document.getElementById('clist');cl.innerHTML='';
+  Object.keys(C).forEach(function(nm){
+    var cv=C[nm];
     var btn=document.createElement('button');
-    btn.className='comp-btn'+(selComp===name?' on':'');
-    btn.innerHTML='<div class="comp-ico"><i class="ti '+c.icon+'"></i></div>'
-      +'<div><div class="comp-name">'+name+'</div><div class="comp-asm">ASM '+c.asm+'</div></div>';
-    btn.onclick=function(){selComp=selComp===name?null:name;renderAll();};
+    btn.className='cb'+(sc===nm?' on':'');
+    btn.innerHTML='<div class="ci"><i class="ti '+cv.i+'"></i></div>'
+      +'<div><div class="cn">'+nm+'</div><div class="ca">ASM '+cv.a+'</div></div>';
+    btn.onclick=function(){sc=sc===nm?null:nm;rAll();};
     cl.appendChild(btn);
   });
 }
 
-function renderOef(){
-  var title=document.getElementById('panelTitle');
-  var grid=document.getElementById('oefGrid');
-  if(!selComp){
-    title.textContent='Kies een competentie in de zijbalk';
-    grid.innerHTML='<div class="empty-panel"><i class="ei ti ti-hand-click"></i>Klik links op een competentie om oefeningen te zien</div>';
+// ── RENDER OEF PANEL ─────────────────────────────────────────
+function rOef(){
+  var ptl=document.getElementById('ptl');
+  var grid=document.getElementById('ogrid');
+  if(!sc){
+    ptl.textContent='Kies een competentie in de zijbalk';
+    grid.innerHTML='<div class="ep"><i class="ti ti-hand-click"></i>Klik links op een competentie om oefeningen te zien</div>';
     return;
   }
-  var oefs=OEF.filter(function(o){
-    return o.comp===selComp
-      && o.lft.indexOf(age)>-1
-      && (typeFilter==='alle'||o.type===typeFilter);
+  var oefs=O.filter(function(o){
+    return o.c===sc && o.lf.indexOf(age)>-1
+      && (tf==='alle'||o.tp===tf)
+      && df[o.df];
   });
-  title.textContent=selComp+' — '+oefs.length+' oefening'+(oefs.length!==1?'en':'');
+  ptl.textContent=sc+' — '+oefs.length+' oefening'+(oefs.length!==1?'en':(selOef?' (selecteer een slot hierboven)':''));
+
   if(!oefs.length){
-    grid.innerHTML='<div class="empty-panel"><i class="ei ti ti-mood-empty"></i>Geen oefeningen voor deze selectie</div>';
+    grid.innerHTML='<div class="ep"><i class="ti ti-mood-empty"></i>Geen oefeningen voor deze selectie</div>';
     return;
   }
-  var html='<div class="oef-grid">';
+
+  var h='<div style="font-size:12px;color:var(--mu);margin-bottom:.65rem;padding:8px 12px;background:var(--blb);border-radius:8px;border:1px solid var(--bo)">'
+    +'<i class="ti ti-info-circle" style="font-size:13px;vertical-align:-2px;margin-right:5px"></i>'
+    +'Klik op <strong>Selecteren</strong> bij een oefening en klik daarna op een leeg slot in het weekschema hierboven.</div>';
+  h+='<div class="ogrid">';
+
   oefs.forEach(function(o){
-    var ip=o.type==='pauze';
-    html+='<div class="oef-card">'
-      +'<div class="oef-top">'
-      +'<span class="badge '+(ip?'badge-p':'badge-b')+'">'+(ip?'Pauzesport':'BSO')+'</span>'
-      +'<span class="oef-name">'+esc(o.t)+'</span>'
+    var ip=o.tp==='pauze';
+    var isSelected=selOef&&selOef.id===o.id;
+    h+='<div class="oc'+(isSelected?' selectable':'')+'" style="'+(isSelected?'border:2px solid var(--or);background:#FFF8F2;':'')+'\">'
+      +'<div class="oct">'
+      +'<span class="bdg '+(ip?'bp':'bb')+'">'+(ip?'Pauzesport':'BSO')+'</span>'
+      +'<span class="db '+dcls(o.df)+'">'+dlbl(o.df)+'</span>'
+      +'<span class="ocn">'+ex(o.t)+'</span>'
       +'</div>'
-      +'<div class="oef-desc">'+esc(o.desc)+'</div>'
-      +'<div class="oef-meta"><span><i class="ti ti-clock" style="font-size:12px"></i> '+esc(o.duur)+'</span>'
-      +'<span><i class="ti ti-users" style="font-size:12px"></i> '+esc(o.groep||'–')+'</span>'
-      +'<span><i class="ti ti-package" style="font-size:12px"></i> '+esc(o.mat)+'</span></div>'
-      +'<div class="day-add-btns">';
-    days.forEach(function(day){
-      var taken=getSlot(day)[o.type]!==null;
-      html+='<button class="dadd'+(taken?' taken':'')+'"'+(taken?' disabled':'')+' onclick="addToDay(\''+o.id+'\',\''+day+'\',\''+o.type+'\')">'
-        +'<i class="ti ti-plus" style="font-size:11px"></i> '+day.substring(0,2)
-        +'</button>';
-    });
-    html+='</div></div>';
+      +'<div class="ocg"><i class="ti ti-target" style="font-size:11px"></i> '+ex(o.g)+'</div>'
+      +'<div class="ocd">'+ex(o.d)+'</div>'
+      +'<div class="ocm">'
+      +'<span><i class="ti ti-clock" style="font-size:11px"></i> '+ex(o.du)+'</span>'
+      +'<span><i class="ti ti-users" style="font-size:11px"></i> '+ex(o.gr||'–')+'</span>'
+      +'<span><i class="ti ti-package" style="font-size:11px"></i> '+ex(o.m)+'</span>'
+      +'</div>'
+      +'<button onclick="startSel(\''+o.id+'\')" style="width:100%;padding:6px 0;border-radius:7px;border:1px solid '+(isSelected?'var(--or)':'var(--bl)')+';background:'+(isSelected?'var(--or)':'var(--bl)')+';color:#fff;font-size:12px;font-weight:600;font-family:Barlow,sans-serif;cursor:pointer;">'
+      +(isSelected?'<i class="ti ti-check" style="font-size:12px"></i> Geselecteerd — klik slot hierboven':'<i class="ti ti-hand-click" style="font-size:12px"></i> Selecteren &amp; inplannen')
+      +'</button>'
+      +'</div>';
   });
-  grid.innerHTML=html+'</div>';
+  grid.innerHTML=h+'</div>';
 }
 
-function renderAll(){renderWeek();renderComp();renderOef();}
+function rAll(){rWGrid();rComp();rOef();}
 
-// ═══════════════════════════════════════════════
-// LIBRARY PAGE
-// ═══════════════════════════════════════════════
-function setLibAge(a){
-  libAge=a;
-  document.getElementById('la47').className='age-opt'+(a==='4-7'?' on':'');
-  document.getElementById('la711').className='age-opt'+(a==='7-11'?' on':'');
-  renderLib();
+// ── LIBRARY ───────────────────────────────────────────────────
+function setLA(a){lAge=a;document.getElementById('la47').className='ao'+(a==='4-7'?' on':'');document.getElementById('la711').className='ao'+(a==='7-11'?' on':'');rLib();}
+function bldLF(){
+  var f=document.getElementById('lf');
+  f.innerHTML='<button class="lcf'+(lComp===null?' on':'')+'" onclick="sLC(null)">Alle</button>';
+  Object.keys(C).forEach(function(nm){f.innerHTML+='<button class="lcf'+(lComp===nm?' on':'')+'" onclick="sLC(\''+nm+'\')">'+nm+'</button>';});
 }
-
-function buildLibFilter(){
-  var f=document.getElementById('libFilter');
-  f.innerHTML='<button class="lcf'+(libComp===null?' on':'')+'" onclick="setLibComp(null)">Alle</button>';
-  Object.keys(COMPS).forEach(function(name){
-    f.innerHTML+='<button class="lcf'+(libComp===name?' on':'')+'" onclick="setLibComp(\''+name+'\')">'+name+'</button>';
-  });
-}
-
-function setLibComp(c){
-  libComp=c;
-  buildLibFilter();
-  renderLib();
-}
-
-function renderLib(){
-  var q=(document.getElementById('libSearch').value||'').toLowerCase();
-  var content=document.getElementById('libContent');
-  var compsToShow=libComp?[libComp]:Object.keys(COMPS);
-  var html='';
-  compsToShow.forEach(function(comp){
-    var oefs=OEF.filter(function(o){
-      return o.comp===comp
-        && o.lft.indexOf(libAge)>-1
-        && (!q||(o.t+o.desc+o.mat).toLowerCase().includes(q));
-    });
+function sLC(c){lComp=c;bldLF();rLib();}
+function rLib(){
+  var q=(document.getElementById('lq').value||'').toLowerCase();
+  var ct=document.getElementById('lc2');
+  var comps=lComp?[lComp]:Object.keys(C);
+  var h='';
+  comps.forEach(function(comp){
+    var oefs=O.filter(function(o){return o.c===comp&&o.lf.indexOf(lAge)>-1&&(!q||(o.t+o.d+o.m).toLowerCase().includes(q));});
     if(!oefs.length) return;
-    var c=COMPS[comp]||{icon:'ti-star'};
-    html+='<div class="lib-section">'
-      +'<div class="lib-section-title"><div class="lib-section-icon"><i class="ti '+c.icon+'"></i></div>'+comp+'</div>'
-      +'<div class="lib-oef-grid">';
+    var cv=C[comp]||{i:'ti-star'};
+    h+='<div class="lsec"><div class="lstl"><div class="lic"><i class="ti '+cv.i+'"></i></div>'+comp+'</div><div class="lgrid">';
     oefs.forEach(function(o){
-      var ip=o.type==='pauze';
-      html+='<div class="lib-card">'
-        +'<div class="lib-card-actions">'
-        +(o.custom?'<button class="lib-act-btn del" onclick="deleteOef(\''+o.id+'\')" title="Verwijderen"><i class="ti ti-trash"></i></button>':'')
-        +'<button class="lib-act-btn" onclick="editOef(\''+o.id+'\')" title="Bewerken"><i class="ti ti-pencil"></i></button>'
+      var ip=o.tp==='pauze';
+      h+='<div class="lc">'
+        +'<div class="lacts">'
+        +(o.custom?'<button class="lab dl" onclick="delO(\''+o.id+'\')" title="Verwijder"><i class="ti ti-trash"></i></button>':'')
+        +'<button class="lab" onclick="editO(\''+o.id+'\')" title="Bewerk"><i class="ti ti-pencil"></i></button>'
         +'</div>'
-        +'<div class="lib-tags" style="margin-bottom:6px">'
-        +'<span class="badge '+(ip?'badge-p':'badge-b')+'">'+(ip?'Pauzesport':'BSO')+'</span>'
-        +(o.custom?'<span class="lib-tag">Eigen</span>':'')
-        +'</div>'
-        +'<div class="lib-name">'+esc(o.t)+'</div>'
-        +'<div class="lib-desc">'+esc(o.desc)+'</div>'
-        +'<div class="lib-meta">'
-        +'<span><i class="ti ti-clock" style="font-size:11px"></i> '+esc(o.duur)+'</span>'
-        +'<span><i class="ti ti-users" style="font-size:11px"></i> '+esc(o.groep||'–')+'</span>'
-        +'<span><i class="ti ti-package" style="font-size:11px"></i> '+esc(o.mat)+'</span>'
-        +'</div>'
-        +'</div>';
+        +'<div class="ltg"><span class="bdg '+(ip?'bp':'bb')+'">'+(ip?'Pauzesport':'BSO')+'</span><span class="db '+dcls(o.df)+'">'+dlbl(o.df)+'</span>'+(o.custom?'<span class="lt">Eigen</span>':'')+'</div>'
+        +'<div class="lnm">'+ex(o.t)+'</div>'
+        +'<div class="lgl"><i class="ti ti-target" style="font-size:10px"></i> '+ex(o.g)+'</div>'
+        +'<div class="ld">'+ex(o.d)+'</div>'
+        +'<div class="lm">'
+        +'<span><i class="ti ti-clock" style="font-size:10px"></i> '+ex(o.du)+'</span>'
+        +'<span><i class="ti ti-users" style="font-size:10px"></i> '+ex(o.gr||'–')+'</span>'
+        +'<span><i class="ti ti-package" style="font-size:10px"></i> '+ex(o.m)+'</span>'
+        +'</div></div>';
     });
-    html+='</div></div>';
+    h+='</div></div>';
   });
-  if(!html) html='<div class="empty-panel"><i class="ei ti ti-search"></i>Geen oefeningen gevonden</div>';
-  content.innerHTML=html;
+  if(!h) h='<div class="ep"><i class="ti ti-search"></i>Geen oefeningen gevonden</div>';
+  ct.innerHTML=h;
 }
 
-// ═══════════════════════════════════════════════
-// MODAL
-// ═══════════════════════════════════════════════
-function openModal(editId){
-  var sel=document.getElementById('inp-comp');
-  sel.innerHTML='';
-  Object.keys(COMPS).forEach(function(c){
-    var o=document.createElement('option');
-    o.value=c;o.textContent=c;sel.appendChild(o);
+// ── PROGRESS ──────────────────────────────────────────────────
+function addGrp(){
+  var nm=prompt('Naam van de groep (bijv. Groep Zon 4-7 jaar):');
+  if(!nm) return;
+  var sc2={};Object.keys(C).forEach(function(c){sc2[c]=0;});
+  GRP.push({id:'g'+Date.now(),name:nm,scores:sc2,notes:''});
+  save();rProg();
+}
+function setStar(gid,comp,v){
+  var g=GRP.find(function(x){return x.id===gid;});if(!g) return;
+  g.scores[comp]=v;save();rProg();
+}
+function sNote(gid,v){var g=GRP.find(function(x){return x.id===gid;});if(!g) return;g.notes=v;save();}
+function delGrp(gid){if(!confirm('Groep verwijderen?')) return;GRP=GRP.filter(function(x){return x.id!==gid;});save();rProg();}
+function rProg(){
+  var grid=document.getElementById('grpGrid');
+  if(!GRP.length){grid.innerHTML='<div style="color:var(--mu);font-size:14px;padding:1rem 0">Nog geen groepen. Klik op Groep toevoegen.</div>';return;}
+  var h='';
+  GRP.forEach(function(g){
+    var tot=Object.values(g.scores).reduce(function(a,b){return a+b;},0);
+    var mx=Object.keys(C).length*5;
+    h+='<div class="gc"><div class="gn">'+ex(g.name)
+      +'<button class="lab dl" onclick="delGrp(\''+g.id+'\')" title="Verwijder"><i class="ti ti-trash"></i></button></div>'
+      +'<div style="font-size:10px;color:var(--mu);margin-bottom:9px">Totaalscore: '+tot+' / '+mx+'</div>'
+      +'<div>';
+    Object.keys(C).forEach(function(comp){
+      var sc2=g.scores[comp]||0;
+      h+='<div class="cpr">'
+        +'<div class="cpl" title="'+comp+'">'+comp.split(' ')[0]+'</div>'
+        +'<div class="cpb"><div class="cpbi" style="width:'+Math.round(sc2/5*100)+'%"></div></div>'
+        +'<div class="stars">';
+      for(var i=1;i<=5;i++)
+        h+='<span class="star'+(i<=sc2?' on':'')+'" onclick="setStar(\''+g.id+'\',\''+comp+'\','+i+')">&#9733;</span>';
+      h+='</div></div>';
+    });
+    h+='</div><textarea class="ni" rows="2" placeholder="Notities..." onchange="sNote(\''+g.id+'\',this.value)">'+ex(g.notes)+'</textarea></div>';
   });
-  document.getElementById('editId').value=editId||'';
-  document.getElementById('modalTitle').textContent=editId?'Oefening bewerken':'Oefening toevoegen';
-  if(editId){
-    var o=OEF.find(function(x){return x.id===editId;});
+  grid.innerHTML=h;
+}
+
+// ── MODAL ─────────────────────────────────────────────────────
+function openModal(eid){
+  var sel=document.getElementById('ic');sel.innerHTML='';
+  Object.keys(C).forEach(function(c){var o=document.createElement('option');o.value=c;o.textContent=c;sel.appendChild(o);});
+  document.getElementById('eid').value=eid||'';
+  document.getElementById('mtl').textContent=eid?'Oefening bewerken':'Oefening toevoegen';
+  if(eid){
+    var o=getOef(eid);
     if(o){
-      document.getElementById('inp-naam').value=o.t;
-      document.getElementById('inp-desc').value=o.desc||'';
-      document.getElementById('inp-type').value=o.type;
-      document.getElementById('inp-leeftijd').value=o.lft.length===2?'beide':o.lft[0];
-      document.getElementById('inp-duur').value=o.duur||'';
-      document.getElementById('inp-groep').value=o.groep||'';
-      document.getElementById('inp-mat').value=o.mat||'';
-      document.getElementById('inp-comp').value=o.comp;
+      document.getElementById('in').value=o.t;
+      document.getElementById('idc').value=o.d||'';
+      document.getElementById('ig').value=o.g||'';
+      document.getElementById('ity').value=o.tp;
+      document.getElementById('ilf').value=o.lf.length===2?'beide':o.lf[0];
+      document.getElementById('idf').value=o.df||'m';
+      document.getElementById('idu').value=o.du||'';
+      document.getElementById('igr').value=o.gr||'';
+      document.getElementById('im').value=o.m||'';
+      document.getElementById('ic').value=o.c;
     }
-  }else{
-    ['naam','desc','duur','groep','mat'].forEach(function(x){document.getElementById('inp-'+x).value='';});
+  } else {
+    ['in','idc','ig','idu','igr','im'].forEach(function(x){document.getElementById(x).value='';});
+    document.getElementById('idf').value='m';
   }
   document.getElementById('modal').classList.add('open');
 }
-
 function closeModal(){document.getElementById('modal').classList.remove('open');}
-
 function saveOef(){
-  var naam=document.getElementById('inp-naam').value.trim();
-  if(!naam){alert('Vul een naam in');return;}
-  var editId=document.getElementById('editId').value;
-  var lft=document.getElementById('inp-leeftijd').value;
+  var nm=document.getElementById('in').value.trim();
+  if(!nm){alert('Vul een naam in');return;}
+  var eid=document.getElementById('eid').value;
+  var lft=document.getElementById('ilf').value;
   var o={
-    id:editId||('c_'+Date.now()),
-    comp:document.getElementById('inp-comp').value,
-    t:naam,
-    desc:document.getElementById('inp-desc').value.trim(),
-    type:document.getElementById('inp-type').value,
-    lft:lft==='beide'?['4-7','7-11']:[lft],
-    duur:document.getElementById('inp-duur').value||'–',
-    groep:document.getElementById('inp-groep').value||'–',
-    mat:document.getElementById('inp-mat').value||'–',
+    id:eid||('c'+Date.now()),
+    c:document.getElementById('ic').value,
+    t:nm,
+    d:document.getElementById('idc').value.trim(),
+    g:document.getElementById('ig').value.trim(),
+    tp:document.getElementById('ity').value,
+    lf:lft==='beide'?['4-7','7-11']:[lft],
+    df:document.getElementById('idf').value,
+    du:document.getElementById('idu').value||'–',
+    gr:document.getElementById('igr').value||'–',
+    m:document.getElementById('im').value||'–',
     custom:true
   };
-  if(editId){
-    var idx=OEF.findIndex(function(x){return x.id===editId;});
-    if(idx>-1) OEF[idx]=o; else OEF.push(o);
-  }else{
-    OEF.push(o);
-  }
-  saveCustoms();closeModal();renderAll();renderLib();
+  if(eid){var idx=O.findIndex(function(x){return x.id===eid;});if(idx>-1) O[idx]=o;else O.push(o);}
+  else O.push(o);
+  save();closeModal();rAll();rLib();
+}
+function editO(id){openModal(id);}
+function delO(id){
+  if(!confirm('Verwijderen?')) return;
+  O.splice(O.findIndex(function(x){return x.id===id;}),1);
+  save();rAll();rLib();
 }
 
-function editOef(id){openModal(id);}
-
-function deleteOef(id){
-  if(!confirm('Oefening verwijderen?')) return;
-  var idx=OEF.findIndex(function(x){return x.id===id;});
-  if(idx>-1) OEF.splice(idx,1);
-  saveCustoms();renderAll();renderLib();
-}
-
-function saveCustoms(){
-  try{
-    var c=OEF.filter(function(o){return o.custom;});
-    localStorage.setItem(lsCustomKey(),JSON.stringify(c));
-  }catch(e){}
-}
-
-// ═══════════════════════════════════════════════
-// PAGES
-// ═══════════════════════════════════════════════
+// ── PAGES ─────────────────────────────────────────────────────
 function showPage(id,btn){
-  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('active');});
-  document.getElementById('page-'+id).classList.add('active');
-  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('active');});
-  btn.classList.add('active');
-  if(id==='library'){buildLibFilter();renderLib();}
+  document.querySelectorAll('.page').forEach(function(p){p.classList.remove('on');});
+  document.getElementById('page-'+id).classList.add('on');
+  document.querySelectorAll('.tab').forEach(function(t){t.classList.remove('on');});
+  btn.classList.add('on');
+  if(id==='library'){bldLF();rLib();}
+  if(id==='progress') rProg();
 }
 
-// ═══════════════════════════════════════════════
-// UTILS
-// ═══════════════════════════════════════════════
-function esc(s){
-  return (s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-// ═══════════════════════════════════════════════
-// INIT
-// ═══════════════════════════════════════════════
-loadAll();
-updateSchTitle();
-renderAll();
+// ── INIT ──────────────────────────────────────────────────────
+load();updT();rAll();
 </script>
 </body>
 </html>
